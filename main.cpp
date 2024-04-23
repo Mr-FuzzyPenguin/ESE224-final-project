@@ -65,6 +65,9 @@ class TicketList {
 // Implement hospital?
 // add other metadata?
 class Database {
+//Contain Ticket List
+//Hospital Data
+//Customer Interruptions
 };
 
 int main()
