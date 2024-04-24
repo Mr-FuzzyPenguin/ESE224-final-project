@@ -17,7 +17,7 @@ public:
         Line* next;
 
         // Line constructor.
-        Line();
+        Line(string line);
     };
 
     // add metadata for query later.
@@ -31,17 +31,32 @@ public:
     float v_non_shunt; //=84.3,
     string status; // PASSIVE SITE SAFETY
 
+    // what substation each ticket is associated with.
+    string substation;
+
     // this just has the head of the lines.
     // This ticket class is a wrapper for a linked list of type: (Line)
     // and also contains metadata.
     Line* log_start;
     // this is for adding at the end of the doubly linked list.
     Line* log_end;
-    Ticket(string str2parse);
+
+    // for doubly linked list implementation
+    Ticket* next;
+    Ticket* prev;
+
+private:
+    friend class TicketList;
+    Ticket(string initTime, string metadata);
+
+public:
+    void addLine(string data);
 };
 
-// TODO linked list implementation
+// TODO doubly linked list implementation
 class TicketList {
+    Ticket* firstTicket;
+    Ticket* lastTicket;
     // TicketList is a class (which is a wrapper) for a linked list of type: (Ticket)
     // part of DataBase
 
@@ -49,6 +64,9 @@ class TicketList {
     // have a large chain of if statements that
     // check for the constraint == value
     void query(string constraint, string value, string type);
+    void addTicket(string filename);
+
+    TicketList();
 };
 
 // TODO decide implementation

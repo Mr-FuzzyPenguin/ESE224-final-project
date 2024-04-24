@@ -9,6 +9,15 @@ using namespace std;
 
 int main()
 {
+    string ls;
+
+    while (ls != "") {
+        cout << "Give me a list of files";
+        getline(cin, ls);
+        cout << ls.length();
+    }
+
+    /*
     ifstream myfile;
 
     string line;
@@ -25,6 +34,6 @@ int main()
         }
     }
     myfile.close();
-
+    */
     return 0;
 }
