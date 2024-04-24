@@ -26,18 +26,23 @@ void TicketList::addTicket(string filename)
         temp = (char)ticketFile.get();
         if (temp != '\n') {
             line += temp;
-        } else {
+        }
+        // newline detected. Decide what to do
+        else {
+            // increment line number just to know what to do
+            // based on the REAL line number
             linenumber++;
             if (linenumber == 2) {
                 line2 = line;
-                cout << "Gathered time start\n";
-
-            } else if (linenumber == 3) {
+            }
+            // line number was 3. Go and initialize the ticket based on line2 and line3
+            else if (linenumber == 3) {
                 line3 = line;
-                cout << "woulda initialized\n";
                 newTicket = new Ticket(line2, line3);
-            } else if (line[0] != 'L') {
-                cout << "woulda added\n";
+            }
+            // not the (VERY FIRST) line.
+            else if (line[0] != 'L') {
+                newTicket->addLine(line);
             }
             line = "";
         }
@@ -56,6 +61,16 @@ void TicketList::addTicket(string filename)
     }
     return;
 }
+
+void Ticket::addLine(string data)
+{
+    cout << "Making sure that this thing works: \n"
+         << data << '\n';
+
+    // TODO @Pete Aptenodytes Forsteri please write a better parser
+    // - Fuzzy Penguin
+}
+
 //
 // void Ticket::addLine(string data)
 // {
@@ -221,10 +236,6 @@ Ticket::Ticket::Line::Line(string line)
 
 Ticket::Ticket(string initTime, string metadata)
 {
-    cout << "Ticket got:\n"
-         << initTime << '\n'
-         << metadata << '\n';
-
     firstLine = new Line(initTime);
     lastLine = firstLine;
 
