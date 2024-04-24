@@ -17,6 +17,8 @@ int main()
         cout << ls.length();
     }
 
+    cout << "Hello World!" << endl; 
+
     /*
     ifstream myfile;
 
