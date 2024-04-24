@@ -64,8 +64,7 @@ void TicketList::addTicket(string filename)
 
 void Ticket::addLine(string data)
 {
-    cout << "Making sure that this thing works: \n"
-         << data << '\n';
+    cout << data << '\n';
 
     // TODO @Pete Aptenodytes Forsteri please write a better parser
     // - Fuzzy Penguin
