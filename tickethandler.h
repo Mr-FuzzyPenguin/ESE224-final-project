@@ -30,17 +30,25 @@ public:
     float harmonic; //=29.3,
     float v_non_shunt; //=84.3,
     string status; // PASSIVE SITE SAFETY
+
+    // this just has the head of the lines.
+    // This ticket class is a wrapper for a linked list of type: (Line)
+    // and also contains metadata.
     Line* log_start;
     // this is for adding at the end of the doubly linked list.
     Line* log_end;
-    Ticket();
-
-private:
-    void ticket_init(string str2parse);
+    Ticket(string str2parse);
 };
 
 // TODO linked list implementation
 class TicketList {
+    // TicketList is a class (which is a wrapper) for a linked list of type: (Ticket)
+    // part of DataBase
+
+    // to search and filter for strings.
+    // have a large chain of if statements that
+    // check for the constraint == value
+    void query(string constraint, string value, string type);
 };
 
 // TODO decide implementation
