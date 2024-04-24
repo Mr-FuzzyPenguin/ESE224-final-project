@@ -11,17 +11,24 @@ public:
         int line_num;
         Time time;
         string remark;
-        string comment;
 
-        // next line in the logs.
+        // next and previous line in the logs.
         Line* next;
+        Line* prev;
 
         // Line constructor.
         Line(string line);
+        friend class Ticket;
+
+        // defaults. helper for Ticket
+        string address;
+        int real_address;
+        string substation;
+        int sector;
     };
 
     // add metadata for query later.
-    string remark;
+    int address;
 
     string structure; //=ASPHALT,
     float voltage; //=68.3,
@@ -32,14 +39,16 @@ public:
     string status; // PASSIVE SITE SAFETY
 
     // what substation each ticket is associated with.
+    // found after address and part
     string substation;
+    int sector;
 
     // this just has the head of the lines.
     // This ticket class is a wrapper for a linked list of type: (Line)
     // and also contains metadata.
-    Line* log_start;
+    Line* firstLine;
     // this is for adding at the end of the doubly linked list.
-    Line* log_end;
+    Line* lastLine;
 
     // for doubly linked list implementation
     Ticket* next;
@@ -55,6 +64,7 @@ public:
 
 // TODO doubly linked list implementation
 class TicketList {
+public:
     Ticket* firstTicket;
     Ticket* lastTicket;
     // TicketList is a class (which is a wrapper) for a linked list of type: (Ticket)

@@ -1,6 +1,6 @@
 #include "projectutils.h"
 
-Time::Time(int y, int m, int d, int h, int min, int s, long ss)
+Time::Time(int y, int m, int d, int h, int min, int s, int ss)
 {
     year = y;
     month = m;
@@ -10,3 +10,5 @@ Time::Time(int y, int m, int d, int h, int min, int s, long ss)
     seconds = s;
     sub_second = ss;
 }
+
+Time::Time() { }

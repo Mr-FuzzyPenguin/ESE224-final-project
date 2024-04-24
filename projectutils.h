@@ -7,8 +7,9 @@ private:
     int hour;
     int minute;
     int seconds;
-    long sub_second;
+    int sub_second;
 
-    Time(int y, int m, int d, int h, int min, int s, long ss);
+    Time(int y, int m, int d, int h, int min, int s, int ss);
+    Time();
     friend class Ticket;
 };
