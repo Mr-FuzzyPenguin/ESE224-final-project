@@ -31,11 +31,11 @@ public:
     int address;
 
     string structure; //=ASPHALT,
-    float voltage; //=68.3,
+    double voltage; //=68.3,
     string ground; //=METAL FENCE,
     string msplate; //=00P,
-    float harmonic; //=29.3,
-    float v_non_shunt; //=84.3,
+    double harmonic; //=29.3,
+    double v_non_shunt; //=84.3,
     string status; // PASSIVE SITE SAFETY
 
     // what substation each ticket is associated with.

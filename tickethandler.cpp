@@ -64,35 +64,14 @@ void TicketList::addTicket(string filename)
 
 void Ticket::addLine(string data)
 {
-    cout << data << '\n';
+    Line* newLine = new Ticket::Line(data);
 
-    // TODO @Pete Aptenodytes Forsteri please write a better parser
-    // - Fuzzy Penguin
+    // make new line point "backwards"
+    newLine->prev = lastLine;
+    // make the last line point "forwards"
+    lastLine->next = newLine;
 }
 
-//
-// void Ticket::addLine(string data)
-// {
-//     // let the Line constructor handle the data processing.
-//     // we are assuming the Line() object gathered the metadata
-//     // already, because of the parser in the constructor.
-//     Line* newLine = new Ticket::Line(data);
-//
-//     // first line is null.
-//     // make both equal to the new line object.
-//     if (firstLine == NULL) {
-//         firstLine = newLine;
-//         lastLine = newLine;
-//     }
-//     // make the lines point correctly.
-//     else {
-//         // make new line point "backwards"
-//         newLine->prev = lastLine;
-//         // make the last line point "forwards"
-//         lastLine->next = newLine;
-//     }
-// }
-//
 // make sure it's only run during lines in which have "line #s"
 Ticket::Ticket::Line::Line(string line)
 {
@@ -198,6 +177,13 @@ Ticket::Ticket::Line::Line(string line)
             temp_string += line[i];
         }
     }
+    // check the ending. If mode == 3, it's a normal log.
+    // therefore: return early
+    if (mode == 2) {
+        remark = temp_string;
+        return;
+    }
+
     substation = temp_string;
 
     // special lines
@@ -243,13 +229,56 @@ Ticket::Ticket(string initTime, string metadata)
     substation = firstLine->substation;
     sector = firstLine->sector;
 
-    // structure; //=ASPHALT,
-    // voltage; //=68.3,
-    // ground; //=METAL FENCE,
-    // msplate; //=00P,
-    // harmonic; //=29.3,
-    // v_non_shunt; //=84.3,
-    // status; // PASSIVE SITE SAFETY
+    // write another parser here. this time, parse metadata string
+    bool recording = false;
+    int part = 0;
+    string temp_string;
+    for (int i = 0; i < metadata.length(); i++) {
+
+        // detected ',' stop recording.
+        // also decide where to route temp_string
+        if (metadata[i] == ',' && recording) {
+            recording = false;
+
+            switch (part) {
+            case 0:
+                structure = temp_string;
+                break;
+            case 1:
+                voltage = stod(temp_string);
+                break;
+            case 2:
+                ground = temp_string;
+                break;
+            case 3:
+                msplate = temp_string;
+                break;
+            case 4:
+                harmonic = stod(temp_string);
+                break;
+            case 5:
+                v_non_shunt = stod(temp_string);
+                break;
+            case 6:
+                status = temp_string;
+                break;
+            }
+
+            // reset temp_string
+            temp_string = "";
+
+            // increase part;
+            part++;
+        }
+        // not comma, but recording. Add to temp_string
+        else if (recording)
+            temp_string += metadata[i];
+
+        // detected '=' start recording.
+        else if (metadata[i] == '=') {
+            recording = true;
+        }
+    }
 
     Line* log_start = NULL;
     Line* log_end = NULL;
