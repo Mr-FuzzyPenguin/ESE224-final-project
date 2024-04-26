@@ -7,10 +7,10 @@
 # Lines:
 - [X] Parser for line numbers, time, and remarks (per line)
 - [X] Handle adding Lines making sure no segfaults occur
-- [] Have a way to query remarks.
+- [ ] Have a way to query remarks.
 
 # Database:
-- [] Querying tickets should not be a strict match, but rather should have tolerance. For example, let's say metadata has 3 V, but a ticket is 3.2 V. Close enough, you should print that to the terminal.
+- [ ] Querying tickets should not be a strict match, but rather should have tolerance. For example, let's say metadata has 3 V, but a ticket is 3.2 V. Close enough, you should print that to the terminal.
 
 # Direct-Future goals (In order of importance)
 1. Printing tickets
