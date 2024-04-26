@@ -73,7 +73,10 @@ public:
     // to search and filter for strings.
     // have a large chain of if statements that
     // check for the constraint == value
-    void query(string constraint, string value, string type);
+    void filterBySubstation(string substation, string y);
+    void filterByIssue(string searchMetadata, string z);
+    void filterByRemark(string k);
+
     void addTicket(string filename);
 
     TicketList();

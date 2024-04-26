@@ -288,7 +288,24 @@ Ticket::Ticket(string initTime, string metadata)
 }
 
 // A note to my partner:
-// I could really use that README file soon man!
-void TicketList::query(string constraint, string value, string type)
+// I could really use that README file soon man (PLEASE ADD ideas for potential implementations)!
+
+// based on the updated checklist and some thinking that I did, I've changed the way we will filter.
+// same procedure for all. Just iterate through all the tickets. Then find the implementation.
+void TicketList::filterBySubstation(string substation, string y) { }
+void TicketList::filterByIssue(string searchMetadata, string z)
 {
+    double doubleQuery;
+    int intQuery;
+    // check what type it should be that we're looking for.
+    if (searchMetadata == "voltage" || searchMetadata == "harmonic" || searchMetadata == "v_non_shunt") {
+        doubleQuery = stod(z);
+    } else if (searchMetadata == "address" || searchMetadata == "sector") {
+        intQuery = stoi(z);
+    }
+
+    // massive if statement goes here. It just checks if the ticket that it's iterating is (within reasonable limits) similar to the constraint, and the searchMetadata parameter dictates which piece of metadata we are comparing to our baseline z (another parameter)
 }
+
+// this is a little more tricky to implement. Implement a way to search key words in the string. I think I'll need some testing in a separate file (test.cpp) or something.
+void TicketList::filterByRemark(string k) { }
