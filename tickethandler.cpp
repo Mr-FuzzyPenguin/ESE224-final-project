@@ -58,6 +58,9 @@ void TicketList::addTicket(string filename)
         newTicket->prev = lastTicket;
         // make the last ticket point "forwards"
         lastTicket->next = newTicket;
+
+        // update last ticket.
+        lastTicket = newTicket;
     }
     return;
 }
@@ -282,4 +285,10 @@ Ticket::Ticket(string initTime, string metadata)
 
     Line* log_start = NULL;
     Line* log_end = NULL;
+}
+
+// A note to my partner:
+// I could really use that README file soon man!
+void TicketList::query(string constraint, string value, string type)
+{
 }
