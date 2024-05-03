@@ -292,7 +292,13 @@ Ticket::Ticket(string initTime, string metadata)
 
 // based on the updated checklist and some thinking that I did, I've changed the way we will filter.
 // same procedure for all. Just iterate through all the tickets. Then find the implementation.
-void TicketList::filterBySubstation(string substation, string y) { }
+void TicketList::filterBySubstation(string substation, string y)
+{
+    Ticket* traverse = firstTicket;
+    while (traverse != NULL) {
+        traverse = traverse->next;
+    }
+}
 void TicketList::filterByIssue(string searchMetadata, string z)
 {
     double doubleQuery;
