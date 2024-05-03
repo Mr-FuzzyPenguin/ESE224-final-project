@@ -73,6 +73,8 @@ void Ticket::addLine(string data)
     newLine->prev = lastLine;
     // make the last line point "forwards"
     lastLine->next = newLine;
+    // shift the lastLine.
+    lastLine = newLine;
 }
 
 // make sure it's only run during lines in which have "line #s"
@@ -292,13 +294,14 @@ Ticket::Ticket(string initTime, string metadata)
 
 // based on the updated checklist and some thinking that I did, I've changed the way we will filter.
 // same procedure for all. Just iterate through all the tickets. Then find the implementation.
-void TicketList::filterBySubstation(string substation, string y)
+void TicketList::filterBySubstation(string substation, string y) void TicketList::query(string constraint, string value, string type)
 {
     Ticket* traverse = firstTicket;
     while (traverse != NULL) {
         traverse = traverse->next;
     }
 }
+
 void TicketList::filterByIssue(string searchMetadata, string z)
 {
     double doubleQuery;
@@ -315,3 +318,9 @@ void TicketList::filterByIssue(string searchMetadata, string z)
 
 // this is a little more tricky to implement. Implement a way to search key words in the string. I think I'll need some testing in a separate file (test.cpp) or something.
 void TicketList::filterByRemark(string k) { }
+ostream& operator<<(ostream& out, Ticket& a)
+{
+    out << "Line,Time,Remark\n1," << a.firstLine->time.year << '_' << a.firstLine->time.month << '_' << a.firstLine->time.day << ' ' << a.firstLine->time.hour << ':' << a.firstLine->time.minute << ':' << a.firstLine->time.seconds << '.' << a.firstLine->time.sub_second;
+
+    return out;
+}

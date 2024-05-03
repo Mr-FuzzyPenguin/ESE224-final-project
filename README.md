@@ -11,11 +11,20 @@
 
 # Database:
 - [ ] Querying tickets should not be a strict match, but rather should have tolerance. For example, let's say metadata has 3 V, but a ticket is 3.2 V. Close enough, you should print that to the terminal.
+- [ ] First, for the database it should be a class that contains a ticket list, the teams data(later on), and the occurences of people(Later on)
+      Ex. class Database{
+      Public:
+      TicketList List;
+      Hospital Teams;
+      Occurences people;
+      };
+- [ ]  
 
 # Direct-Future goals (In order of importance)
 1. Printing tickets
 2. Ticket Querying (filtering between dates, substation, incident type, and comment search). Note: This might mean we might have to re-think our header files, and implementation. Rather than having one giant function that does a massive query, we can divide-and-conquer for convenience
-3. AFTER WE IMPLEMENT THE ABOVE^^ We should get started with our report, to justify why our approach is good.
+   - For this specfic point,(thinking specifically about the similar ticket task) I was thinking that we can iterate through our doubly linked list for each ticket, specfically looking at the comments, with each comment, we store every string in a binary tree which is organized based on string comparing (greater than or less than). THen we can use those trees to compare to other trees of ticket comments where we can see which trees are most similar to each other and store them in an array of similar ticket comments. When comaparing, every time that we find a ticket that is not similar to the previous we will begin comparing that ticket to other tickets, whilst still comparing the previous ticket. (if that makes sense.) Sort of like a bubble sort type of thing. 
+4. AFTER WE IMPLEMENT THE ABOVE^^ We should get started with our report, to justify why our approach is good.
 
 ## Potential implementation ideas:
 1. Operator overloading (for << ticket type)??
