@@ -13,3 +13,28 @@ private:
     Time();
     friend class Ticket;
 };
+
+class HospitalDates {
+private:
+    int startYear;
+    int startMonth;
+    int startDay;
+
+    int endYear;
+    int endMonth;
+    int endDay;
+
+    HospitalDates(int Sy, int Sm, int Sd, int Ey, int Em, int Ed)
+    {
+        startYear = Sy;
+        startMonth = Sm;
+        startDay = Sd;
+
+        endYear = Ey;
+        endMonth = Em;
+        endDay = Ed;
+    };
+    HospitalDates();
+    friend class Ticket;
+};
+
