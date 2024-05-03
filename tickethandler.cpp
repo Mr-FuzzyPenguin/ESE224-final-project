@@ -73,6 +73,8 @@ void Ticket::addLine(string data)
     newLine->prev = lastLine;
     // make the last line point "forwards"
     lastLine->next = newLine;
+    // shift the lastLine.
+    lastLine = newLine;
 }
 
 // make sure it's only run during lines in which have "line #s"
@@ -287,8 +289,13 @@ Ticket::Ticket(string initTime, string metadata)
     Line* log_end = NULL;
 }
 
-// A note to my partner:
-// I could really use that README file soon man!
 void TicketList::query(string constraint, string value, string type)
 {
+}
+
+ostream& operator<<(ostream& out, Ticket& a)
+{
+    out << "Line,Time,Remark\n1," << a.firstLine->time.year << '_' << a.firstLine->time.month << '_' << a.firstLine->time.day << ' ' << a.firstLine->time.hour << ':' << a.firstLine->time.minute << ':' << a.firstLine->time.seconds << '.' << a.firstLine->time.sub_second;
+
+    return out;
 }

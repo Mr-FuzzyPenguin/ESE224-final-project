@@ -14,5 +14,7 @@ int main()
     // adding more tests. Soon, we'll generalize.
     t.addTicket("tickets/EB04706280.csv");
     t.addTicket("tickets/EB05574047.csv");
+
+    cout << *t.firstTicket;
     return 0;
 }

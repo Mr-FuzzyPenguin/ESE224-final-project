@@ -1,5 +1,5 @@
 class Time {
-private:
+public:
     int year;
     int month;
     int day;
@@ -37,4 +37,3 @@ private:
     HospitalDates();
     friend class Ticket;
 };
-

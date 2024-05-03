@@ -7,6 +7,9 @@ public:
     // This should be a doubly linked list implementation with all of the lines.
     // Lines should be parsed and numbered.
     class Line {
+        friend ostream& operator<<(ostream& out, Time& a);
+
+    public:
         // metadata
         int line_num;
         Time time;
@@ -56,6 +59,8 @@ public:
 
 private:
     friend class TicketList;
+    friend ostream& operator<<(ostream& out, Ticket& a);
+    friend istream& operator>>(istream& in, Ticket& a);
     Ticket(string initTime, string metadata);
 
 public:
