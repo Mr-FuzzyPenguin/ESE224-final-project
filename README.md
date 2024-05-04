@@ -18,7 +18,8 @@ This will display the contents of our ticket. We will go through every single of
 
 ### Outage Display by Period - 
 For this specific question after looking at the ticket examples we realized that each substation can have multiple outages at different addresses. And so, with this in mind, since the goal is to show the amount of outages within a certain period of time. We will first output the amount of total outages within that period of time for a specific substation that was passed as a parameter to our function. Then we will display each ticket's first line of information that includes the time at which the ticket was created and the addressed in which the outage had occurred in.
-
+### Most Similar Tickets - 
+For this question we assumed that we would be comparing this "similar tickets" relative to a ticket that an operator would already be looking at. And so in our function will pass the parameter Y as the number of similar tickets that we want to find, alongside another parameter which will contain the name of a file of a ticket that we want to compare to. And so this output of this function will output a Y number of similar tickets to ticket X. 
 #### Implementation - 
 So the way that this code will be implemented is that for checking similar tickets within the same substation:
 1. Take the substation from ticket X. And use that substation to parse through all the tickets within our database to find all the tickets for that substation, 
