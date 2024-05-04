@@ -1,38 +1,31 @@
-# Tickets:
-- [X] Doubly linked list implementation for ticket.
-- [X] Ticket first line should be one before metadata.
-- [X] Ticket add_line to be added.
-- [X] Parser for ticket metadata to be added
-- [X] Printing tickets (used Operator overloading for cout << Ticket) as demonstrated in main.cpp
+# Question 1: 
+## Ticket's Database 
 
-# Lines:
-- [X] Parser for line numbers, time, and remarks (per line)
-- [X] Handle adding Lines making sure no segfaults occur
-- [ ] Have a way to query remarks.
+### Overall-List
 
-# Database:
-- [ ] Querying tickets should not be a strict match, but rather should have tolerance. For example, let's say metadata has 3 V, but a ticket is 3.2 V. Close enough, you should print that to the terminal.
-- [ ] First, for the database it should be a class that contains a ticket list, the teams data(later on), and the occurences of people(Later on)
-      Ex. class Database{
-      Public:
-      TicketList List;
-      Hospital Teams;
-      Occurences people;
-      };
-- [ ]
+Start off with our Ticket List. This would be in the form of  a Doubly Linked List. This means that each ticket would have a pointer towards the next ticket and a pointer towards the previous ticket. We will manually go through each ticket when we need to go through it, using some type temp variable. 
 
-# Direct-Future goals (In order of importance)
-1. Ticket Querying (filtering between dates, substation, incident type, and comment search). Note: This might mean we might have to re-think our header files, and implementation. Rather than having one giant function that does a massive query, we can divide-and-conquer for convenience
-   - For this specfic point,(thinking specifically about the similar ticket task) I was thinking that we can iterate through our doubly linked list for each ticket, specfically looking at the comments, with each comment, we store every string in a binary tree which is organized based on string comparing (greater than or less than). THen we can use those trees to compare to other trees of ticket comments where we can see which trees are most similar to each other and store them in an array of similar ticket comments. When comaparing, every time that we find a ticket that is not similar to the previous we will begin comparing that ticket to other tickets, whilst still comparing the previous ticket. (if that makes sense.) Sort of like a bubble sort type of thing. 
-2. AFTER WE IMPLEMENT THE ABOVE^^ We should get started with our report, to justify why our approach is good.
+### Each-Ticket
+--
+For each ticket it will contain the information from the first line. (includes the substation, the initial voltage, etc.) It will also contain a Doubly Linked list of lines as well to store the rest of the lines of the ticket.
+### Each-Line
+--
+Each line will contain information regarding line number, time, remark, substation, etc. 
+#### Add Line - addLine(string data)
+This will update the ticket node of the ticket list, by adding a line node to the line list.
+#### Ticket Display - //function
+This will display the contents of our ticket. We will go through every single of ticket, by utilizing the doubly linked list of lines. 
 
-## Potential implementation ideas:
-1. Trees (for database)??
-2. To my teammate: Please add more ideas, I'm here to code, but management... is not really my thing (in case it hasn't been too obvious). My organizational skills are all over the place :P
+### Outage Display by Period - 
+For this specific question after looking at the ticket examples we realized that each substation can have multiple outages at different addresses. And so, with this in mind, since the goal is to show the amount of outages within a certain period of time. We will first output the amount of total outages within that period of time for a specific substation that was passed as a parameter to our function. Then we will display each ticket's first line of information that includes the time at which the ticket was created and the addressed in which the outage had occurred in.
 
-# Far-Future goals:
-- Write parser for Task 2
-- Task 3 (Unknown plans as of now)
-- Task 4 (Unknown plans as of now)
-- Task 5 (Unknown plans as of now)
-- Code optimization. We've just (barely) finished task 1, and our code is a disastrous mess in terms of optimization. Thankfully, it's memory safe.
+### Most Similar Tickets - 
+For this question we assumed that we would be comparing this "similar tickets" relative to a ticket that an operator would already be looking at. And so in our function will pass the parameter Y as the number of similar tickets that we want to find, alongside another parameter which will contain the name of a file of a ticket that we want to compare to. And so this output of this function will output a Y number of similar tickets to ticket X. 
+
+For the within the same substations, we will just put a restriction on the pool of data that this function will have access to compare to. And for the different substations will we do the same in order to not allow the tiicket to be compared to tickets withint the same substation. 
+
+### Most Frequent Words - 
+For this question we will pass two parameters, one being the substation, X, and they other people the K number of frequent words that we want to find. And so in this function we will go to all the tickets within a specific substation then we will pool all the comments together and could the most frequent words within the pool of comments. Then we will output each word and it's respective frequency.
+
+# Question 2: 
+## Hospital Database 
