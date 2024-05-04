@@ -285,6 +285,7 @@ Ticket::Ticket(string initTime, string metadata)
         }
     }
 
+    status = temp_string.substr(0, temp_string.length() - 2);
     Line* log_start = NULL;
     Line* log_end = NULL;
 }
@@ -294,13 +295,15 @@ Ticket::Ticket(string initTime, string metadata)
 
 // based on the updated checklist and some thinking that I did, I've changed the way we will filter.
 // same procedure for all. Just iterate through all the tickets. Then find the implementation.
-void TicketList::filterBySubstation(string substation, string y) void TicketList::query(string constraint, string value, string type)
-{
-    Ticket* traverse = firstTicket;
-    while (traverse != NULL) {
-        traverse = traverse->next;
-    }
-}
+void TicketList::filterBySubstation(string substation, string y) { }
+
+// void TicketList::query(string constraint, string value, string type)
+// {
+//     Ticket* traverse = firstTicket;
+//     while (traverse != NULL) {
+//         traverse = traverse->next;
+//     }
+// }
 
 void TicketList::filterByIssue(string searchMetadata, string z)
 {
@@ -320,7 +323,14 @@ void TicketList::filterByIssue(string searchMetadata, string z)
 void TicketList::filterByRemark(string k) { }
 ostream& operator<<(ostream& out, Ticket& a)
 {
-    out << "Line,Time,Remark\n1," << a.firstLine->time.year << '_' << a.firstLine->time.month << '_' << a.firstLine->time.day << ' ' << a.firstLine->time.hour << ':' << a.firstLine->time.minute << ':' << a.firstLine->time.seconds << '.' << a.firstLine->time.sub_second;
+    // yikes. We have to have a deterministic first three lines
+    out << "Line,Time,Remark\n1," << a.firstLine->time.year << '_' << a.firstLine->time.month << '_' << a.firstLine->time.day << ' ' << pad_zeroes(a.firstLine->time.hour) << ':' << pad_zeroes(a.firstLine->time.minute) << ':' << pad_zeroes(a.firstLine->time.seconds) << '.' << to_string(a.firstLine->time.sub_second).substr(2) << ',' << a.firstLine->remark << ",ENE," << a.firstLine->address << ' ' << a.firstLine->substation << ' ' << a.firstLine->real_address << "\n,,\"STRUCTURE=" << a.structure << ", VOLTAGE=" << a.voltage << ", GROUND=" << a.ground << ", MSPLATE=" << a.msplate << ", HARMONIC=" << a.harmonic << ", V NON-SHUNT=" << a.v_non_shunt << ", STATUS=" << a.status << '\n';
+
+    Ticket::Line* traverse = a.firstLine;
+    while (traverse != NULL) {
+        cout << traverse->line_num << ',' << traverse->time.year << '_' << traverse->time.month << '_' << traverse->time.day << ' ' << pad_zeroes(traverse->time.hour) << ':' << pad_zeroes(traverse->time.minute) << ':' << pad_zeroes(traverse->time.seconds) << '.' << to_string(traverse->time.sub_second).substr(2) << ',' << traverse->remark << '\n';
+        traverse = traverse->next;
+    }
 
     return out;
 }

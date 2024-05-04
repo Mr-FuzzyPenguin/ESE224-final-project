@@ -1,3 +1,7 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
 class Time {
 public:
     int year;
@@ -7,7 +11,7 @@ public:
     int hour;
     int minute;
     int seconds;
-    int sub_second;
+    double sub_second;
 
     Time(int y, int m, int d, int h, int min, int s, int ss);
     Time();
@@ -37,3 +41,4 @@ private:
     HospitalDates();
     friend class Ticket;
 };
+string pad_zeroes(int number);

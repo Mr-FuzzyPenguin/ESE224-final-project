@@ -16,5 +16,6 @@ int main()
     t.addTicket("tickets/EB05574047.csv");
 
     cout << *t.firstTicket;
+    cout << *t.firstTicket->next;
     return 0;
 }
