@@ -73,6 +73,8 @@ void Ticket::addLine(string data)
     newLine->prev = lastLine;
     // make the last line point "forwards"
     lastLine->next = newLine;
+    // shift the lastLine.
+    lastLine = newLine;
 }
 
 // make sure it's only run during lines in which have "line #s"
@@ -283,12 +285,52 @@ Ticket::Ticket(string initTime, string metadata)
         }
     }
 
+    status = temp_string.substr(0, temp_string.length() - 2);
     Line* log_start = NULL;
     Line* log_end = NULL;
 }
 
 // A note to my partner:
-// I could really use that README file soon man!
-void TicketList::query(string constraint, string value, string type)
+// I could really use that README file soon man (PLEASE ADD ideas for potential implementations)!
+
+// based on the updated checklist and some thinking that I did, I've changed the way we will filter.
+// same procedure for all. Just iterate through all the tickets. Then find the implementation.
+void TicketList::filterBySubstation(string substation, string y) { }
+
+// void TicketList::query(string constraint, string value, string type)
+// {
+//     Ticket* traverse = firstTicket;
+//     while (traverse != NULL) {
+//         traverse = traverse->next;
+//     }
+// }
+
+void TicketList::filterByIssue(string searchMetadata, string z)
 {
+    double doubleQuery;
+    int intQuery;
+    // check what type it should be that we're looking for.
+    if (searchMetadata == "voltage" || searchMetadata == "harmonic" || searchMetadata == "v_non_shunt") {
+        doubleQuery = stod(z);
+    } else if (searchMetadata == "address" || searchMetadata == "sector") {
+        intQuery = stoi(z);
+    }
+
+    // massive if statement goes here. It just checks if the ticket that it's iterating is (within reasonable limits) similar to the constraint, and the searchMetadata parameter dictates which piece of metadata we are comparing to our baseline z (another parameter)
+}
+
+// this is a little more tricky to implement. Implement a way to search key words in the string. I think I'll need some testing in a separate file (test.cpp) or something.
+void TicketList::filterByRemark(string k) { }
+ostream& operator<<(ostream& out, Ticket& a)
+{
+    // yikes. We have to have a deterministic first three lines
+    out << "Line,Time,Remark\n1," << a.firstLine->time.year << '_' << a.firstLine->time.month << '_' << a.firstLine->time.day << ' ' << pad_zeroes(a.firstLine->time.hour) << ':' << pad_zeroes(a.firstLine->time.minute) << ':' << pad_zeroes(a.firstLine->time.seconds) << '.' << to_string(a.firstLine->time.sub_second).substr(2) << ',' << a.firstLine->remark << ",ENE," << a.firstLine->address << ' ' << a.firstLine->substation << ' ' << a.firstLine->real_address << "\n,,\"STRUCTURE=" << a.structure << ", VOLTAGE=" << a.voltage << ", GROUND=" << a.ground << ", MSPLATE=" << a.msplate << ", HARMONIC=" << a.harmonic << ", V NON-SHUNT=" << a.v_non_shunt << ", STATUS=" << a.status << '\n';
+
+    Ticket::Line* traverse = a.firstLine;
+    while (traverse != NULL) {
+        cout << traverse->line_num << ',' << traverse->time.year << '_' << traverse->time.month << '_' << traverse->time.day << ' ' << pad_zeroes(traverse->time.hour) << ':' << pad_zeroes(traverse->time.minute) << ':' << pad_zeroes(traverse->time.seconds) << '.' << to_string(traverse->time.sub_second).substr(2) << ',' << traverse->remark << '\n';
+        traverse = traverse->next;
+    }
+
+    return out;
 }
