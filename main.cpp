@@ -17,5 +17,7 @@ int main()
 
     cout << *t.firstTicket;
     cout << *t.firstTicket->next;
+
+    t.filterByTime(Time(2021, 1, 1, 1, 1, 1, 0), Time(2022, 05, 24, 02, 41, 01, 647934), "TM");
     return 0;
 }

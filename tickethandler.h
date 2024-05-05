@@ -72,13 +72,16 @@ class TicketList {
 public:
     Ticket* firstTicket;
     Ticket* lastTicket;
+
+    void filterByTime(Time start, Time end, string substation);
+
     // TicketList is a class (which is a wrapper) for a linked list of type: (Ticket)
     // part of DataBase
 
     // to search and filter for strings.
     // have a large chain of if statements that
     // check for the constraint == value
-    void filterBySubstation(string substation, string y);
+    void filterBySubstation(string y, string filename);
     void filterByIssue(string searchMetadata, string z);
     void filterByRemark(string k);
 

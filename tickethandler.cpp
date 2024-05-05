@@ -291,19 +291,28 @@ Ticket::Ticket(string initTime, string metadata)
 }
 
 // A note to my partner:
-// I could really use that README file soon man (PLEASE ADD ideas for potential implementations)!
+// thanks mate :D
+void TicketList::filterByTime(Time start, Time end, string substation)
+{
+    cout << "#######################\n#  Filtering by time. #\n#######################\n\nWe are searching in substation " << substation << " and between: " << start << " to " << end << "\n\nHere's what we found:\n.\n.\n";
 
-// based on the updated checklist and some thinking that I did, I've changed the way we will filter.
-// same procedure for all. Just iterate through all the tickets. Then find the implementation.
-void TicketList::filterBySubstation(string substation, string y) { }
+    Ticket* traverse = firstTicket;
+    while (traverse != NULL) {
+        // within our time range and also matches substation
+        if (traverse->firstLine->time > start && traverse->firstLine->time < end && traverse->substation == substation) {
+            cout << *traverse;
+        }
+        traverse = traverse->next;
+    }
+}
 
-// void TicketList::query(string constraint, string value, string type)
-// {
-//     Ticket* traverse = firstTicket;
-//     while (traverse != NULL) {
-//         traverse = traverse->next;
-//     }
-// }
+// "For this question we assumed that we would be comparing this "similar tickets" relative to a ticket that an operator would already be looking at. And so in our function will pass the parameter Y as the number of similar tickets that we want to find, alongside another parameter which will contain the name of a file of a ticket that we want to compare to. And so this output of this function will output a Y number of similar tickets to ticket X."
+void TicketList::filterBySubstation(string y, string X)
+{
+    // so in this case, we look at the substation name from string x. We don't actually have to look at the file itself, the filename will already tell us what to compare.
+
+    // In this case, ticket X is our filename. We know the filename by looking at the Ticket.firstLine.remark comparisons.
+}
 
 void TicketList::filterByIssue(string searchMetadata, string z)
 {
@@ -321,6 +330,7 @@ void TicketList::filterByIssue(string searchMetadata, string z)
 
 // this is a little more tricky to implement. Implement a way to search key words in the string. I think I'll need some testing in a separate file (test.cpp) or something.
 void TicketList::filterByRemark(string k) { }
+
 ostream& operator<<(ostream& out, Ticket& a)
 {
     // yikes. We have to have a deterministic first three lines

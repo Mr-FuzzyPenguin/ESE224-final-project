@@ -13,6 +13,12 @@ public:
     int seconds;
     double sub_second;
 
+    // time comparisons for filtering by time.
+    bool operator<(Time& a);
+    bool operator>(Time& a);
+    // helpful for automatically formatting time and printing
+    friend ostream& operator<<(ostream& out, Time& t);
+
     Time(int y, int m, int d, int h, int min, int s, int ss);
     Time();
     friend class Ticket;
