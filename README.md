@@ -43,3 +43,21 @@ For this question we will pass two parameters, one being the substation, X, and 
 
 # Question 2: 
 ## Hospital Database 
+
+For this step we will make it so that this class contains a 5 instances of substation classes which will represent each substation that we are dealing with in this project. 
+Maybe we could highlight the best team within all the substation (unnecessary just for aesthetic)
+### Substation - 
+Each substations will contain a Doubly  Linked List of Teams. 
+We we use the sort function for the teams, then this would also contain the head of the best teams doubly so show which team within each substation is the best.
+
+#### Teams - 
+Each team will contain a Doubly Linked List of Surgeries. 
+This class will also contain the average times,  average difficulty, and average calculated performance.  
+Might add a sort function to rank each team based on average calculated performance.(since this will be used later on)
+
+##### Surgeries - 
+Each surgery will contain the general information from each line of the file.
+
+
+
+
