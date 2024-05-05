@@ -51,5 +51,5 @@ class HospitalData
     Substation OF;
     Substation TM; 
     Substation HD; 
-    
+    //yea ask me if you have any questions
 };
