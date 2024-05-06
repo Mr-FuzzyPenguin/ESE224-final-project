@@ -20,6 +20,7 @@ public:
     friend ostream& operator<<(ostream& out, Time& t);
 
     Time(int y, int m, int d, int h, int min, int s, int ss);
+    Time(int y, int m, int d);
     Time();
     friend class Ticket;
 };

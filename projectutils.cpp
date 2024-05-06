@@ -9,9 +9,20 @@ Time::Time(int y, int m, int d, int h, int min, int s, int ss)
     month = m;
     day = d;
     hour = h;
-    minute = m;
+    minute = min;
     seconds = s;
     sub_second = ((double)ss) / 1000000;
+}
+
+Time::Time(int y, int m, int d)
+{
+    year = y;
+    month = m;
+    day = d;
+    hour = 0;
+    minute = 0;
+    seconds = 0;
+    sub_second = 0;
 }
 
 Time::Time() { }
