@@ -146,10 +146,11 @@ void WordList::display()
     }
 }
 
-bool WordList::compare(WordList& w)
+bool WordList::compare(WordList* w)
 {
-    // placeholder
-    return true;
+
+    // iterate through this word list, starting from most frequent, to least. Compare along the way.
+    return true; // WARNING THE FOLLOWING IS A PLACEHOLDER. FUNCTIONALITY TO BE ADDED SOON.
 }
 
 void WordList::sort()

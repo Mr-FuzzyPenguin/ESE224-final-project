@@ -19,10 +19,12 @@ int main()
     }
 
     cout << *t.firstTicket;
-    cout << *t.firstTicket->next;
-    // works. Now, we can do that searching two words or three words thingymabob
-    WordList* w = t.firstTicket->generateWordList();
-    w->display();
+    t.firstTicket->wordFreq->display();
+    // cout << *t.firstTicket->next;
+
+    // each ticket now has their own word frequency chart.
+    // WordList* w = t.firstTicket->generateWordList();
+    // w->display();
 
     // I've recently tested this and made sure this works. I'm pleased with what it was able to do, so for now, I'm commenting out this line.
     // t.filterByTime(Time(2021, 1, 1, 1, 1, 1, 0), Time(2022, 05, 24, 02, 41, 01, 647934), "TM");

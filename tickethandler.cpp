@@ -62,6 +62,8 @@ void TicketList::addTicket(string filename)
         // update last ticket.
         lastTicket = newTicket;
     }
+
+    newTicket->generateWordList();
     return;
 }
 
@@ -77,7 +79,7 @@ void Ticket::addLine(string data)
     lastLine = newLine;
 }
 
-WordList* Ticket::generateWordList()
+void Ticket::generateWordList()
 {
     WordList* newWordList = new WordList;
     Line* traverse = firstLine->next;
@@ -87,7 +89,13 @@ WordList* Ticket::generateWordList()
     }
 
     newWordList->sort();
-    return newWordList;
+    wordFreq = newWordList;
+    return;
+}
+
+bool Ticket::compare(Ticket* t)
+{
+    return wordFreq->compare(t->wordFreq);
 }
 
 // make sure it's only run during lines in which have "line #s"

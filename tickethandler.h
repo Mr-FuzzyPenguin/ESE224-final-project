@@ -58,14 +58,19 @@ public:
     Ticket* prev;
 
 private:
+    void generateWordList();
     friend class TicketList;
     friend ostream& operator<<(ostream& out, Ticket& a);
     friend istream& operator>>(istream& in, Ticket& a);
     Ticket(string initTime, string metadata);
 
 public:
+    // this should be privat'ed soon because comparisons should only be run by tickets themselves, who compares other tickets. This is because compare will call the compare method of the WordList anyway (which is private.)
+    WordList* wordFreq;
+    // ^^ private
+
+    bool compare(Ticket* t);
     void addLine(string data);
-    WordList* generateWordList();
 };
 
 // TODO doubly linked list implementation
