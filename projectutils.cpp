@@ -148,9 +148,17 @@ void WordList::display()
 
 bool WordList::compare(WordList* w)
 {
+    // iterate through current word list
+    // Compare with other word list. Use nested for loop
+    for (Word* traverse = head; traverse != NULL; traverse = traverse->next) {
+        for (Word* other_traverse = w->head; other_traverse != NULL; other_traverse = other_traverse->next) {
+            if (other_traverse->content == traverse->content && abs(other_traverse->frequency - traverse->frequency) <= 3) {
+                return true;
+            }
+        }
+    }
 
-    // iterate through this word list, starting from most frequent, to least. Compare along the way.
-    return true; // WARNING THE FOLLOWING IS A PLACEHOLDER. FUNCTIONALITY TO BE ADDED SOON.
+    return false; // WARNING THE FOLLOWING IS A PLACEHOLDER. FUNCTIONALITY TO BE ADDED SOON.
 }
 
 void WordList::sort()
