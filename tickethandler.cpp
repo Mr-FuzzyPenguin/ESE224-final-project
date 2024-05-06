@@ -85,6 +85,8 @@ WordList* Ticket::generateWordList()
         newWordList->addRemark(traverse->remark);
         traverse = traverse->next;
     }
+
+    newWordList->sort();
     return newWordList;
 }
 

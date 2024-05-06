@@ -20,6 +20,7 @@ int main()
 
     cout << *t.firstTicket;
     cout << *t.firstTicket->next;
+    // works. Now, we can do that searching two words or three words thingymabob
     WordList* w = t.firstTicket->generateWordList();
     w->display();
 
