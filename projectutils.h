@@ -64,10 +64,11 @@ private:
 class WordList {
 public:
     void addRemark(string add_freq);
+    void display();
+    WordList();
 
 private:
     Word* head;
-    WordList();
 };
 
 string pad_zeroes(int number);

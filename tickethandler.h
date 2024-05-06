@@ -65,6 +65,7 @@ private:
 
 public:
     void addLine(string data);
+    WordList* generateWordList();
 };
 
 // TODO doubly linked list implementation

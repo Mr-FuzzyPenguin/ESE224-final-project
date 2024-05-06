@@ -67,7 +67,7 @@ bool Time::operator>(Time& t)
 Word::Word(string c)
 {
     content = c;
-    frequency = 0;
+    frequency = 1;
     next = NULL;
 }
 
@@ -83,7 +83,7 @@ WordList::WordList()
 void WordList::addRemark(string add_freq)
 {
     // search for a ':' and count to 2 (because we're ignoring the "Comment:" string)
-    int colons;
+    int colons = 0;
     string query = "";
     bool ignore;
 
@@ -95,16 +95,22 @@ void WordList::addRemark(string add_freq)
         if (colons >= 2 && add_freq[i] == ' ') {
             i++;
             // read until you get a space
-            while (add_freq[i] != ' ') {
+            while (add_freq[i] != ' ' && add_freq[i] != '\r') {
                 query += add_freq[i];
                 // make sure it is a valid word.
                 if ((add_freq[i] >= '0' && add_freq[i] <= '9') || add_freq[i] == '%' || add_freq[i] == '&') {
                     ignore = true;
                 }
+                i++;
             }
             if (ignore) {
+                ignore = false;
+                query = "";
+                i--;
                 continue;
-            } else {
+            }
+            // not ignoring. Handle the word, then reset the query string
+            else {
                 // go through list, see if word matches, if it does, increment.
                 Word* traverse = head;
                 while (traverse != NULL) {
@@ -112,6 +118,7 @@ void WordList::addRemark(string add_freq)
                         traverse->inc();
                         break;
                     }
+                    traverse = traverse->next;
                 }
 
                 // if traverse is NULL then that means that the word did not exist. Add the word to the head.
@@ -120,10 +127,22 @@ void WordList::addRemark(string add_freq)
                     newWord->next = head;
                     head = newWord;
                 }
+
+                query = "";
             }
             // move back so next time i gets incremented, it'll hit space
-            i--;
+            if (add_freq[i] != '\r')
+                i--;
         }
+    }
+}
+void WordList::display()
+{
+    cout << "DISPLAYING FREQUENCY OF WORDS:\n\n";
+    Word* traverse = head;
+    while (traverse != NULL) {
+        cout << traverse->content << ": " << traverse->frequency << '\n';
+        traverse = traverse->next;
     }
 }
 

@@ -77,6 +77,17 @@ void Ticket::addLine(string data)
     lastLine = newLine;
 }
 
+WordList* Ticket::generateWordList()
+{
+    WordList* newWordList = new WordList;
+    Line* traverse = firstLine->next;
+    while (traverse != NULL) {
+        newWordList->addRemark(traverse->remark);
+        traverse = traverse->next;
+    }
+    return newWordList;
+}
+
 // make sure it's only run during lines in which have "line #s"
 Ticket::Ticket::Line::Line(string line)
 {
