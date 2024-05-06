@@ -47,4 +47,27 @@ private:
     HospitalDates();
     friend class Ticket;
 };
+
+// Linked List to help search words
+class Word {
+public:
+    string content;
+    int frequency;
+
+private:
+    Word(string c);
+    Word* next;
+    void inc();
+    friend class WordList;
+};
+
+class WordList {
+public:
+    void addRemark(string add_freq);
+
+private:
+    Word* head;
+    WordList();
+};
+
 string pad_zeroes(int number);

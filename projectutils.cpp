@@ -64,6 +64,69 @@ bool Time::operator>(Time& t)
     return false;
 }
 
+Word::Word(string c)
+{
+    content = c;
+    frequency = 0;
+    next = NULL;
+}
+
+void Word::inc()
+{
+    frequency++;
+}
+
+WordList::WordList()
+{
+    head = NULL;
+}
+void WordList::addRemark(string add_freq)
+{
+    // search for a ':' and count to 2 (because we're ignoring the "Comment:" string)
+    int colons;
+    string query = "";
+    bool ignore;
+
+    for (int i = 0; i < add_freq.length(); i++) {
+        if (add_freq[i] == ':') {
+            colons++;
+        }
+
+        if (colons >= 2 && add_freq[i] == ' ') {
+            i++;
+            // read until you get a space
+            while (add_freq[i] != ' ') {
+                query += add_freq[i];
+                // make sure it is a valid word.
+                if ((add_freq[i] >= '0' && add_freq[i] <= '9') || add_freq[i] == '%' || add_freq[i] == '&') {
+                    ignore = true;
+                }
+            }
+            if (ignore) {
+                continue;
+            } else {
+                // go through list, see if word matches, if it does, increment.
+                Word* traverse = head;
+                while (traverse != NULL) {
+                    if (query == traverse->content) {
+                        traverse->inc();
+                        break;
+                    }
+                }
+
+                // if traverse is NULL then that means that the word did not exist. Add the word to the head.
+                if (traverse == NULL) {
+                    Word* newWord = new Word(query);
+                    newWord->next = head;
+                    head = newWord;
+                }
+            }
+            // move back so next time i gets incremented, it'll hit space
+            i--;
+        }
+    }
+}
+
 string pad_zeroes(int number)
 {
     string output;
