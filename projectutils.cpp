@@ -67,7 +67,7 @@ bool Time::operator>(Time& t)
 Word::Word(string c)
 {
     content = c;
-    frequency = 1;
+    frequency = 0;
     next = NULL;
 }
 
@@ -126,6 +126,7 @@ void WordList::addRemark(string add_freq)
                     Word* newWord = new Word(query);
                     newWord->next = head;
                     head = newWord;
+                    head->inc();
                 }
 
                 query = "";
@@ -152,13 +153,18 @@ bool WordList::compare(WordList* w)
     // Compare with other word list. Use nested for loop
     for (Word* traverse = head; traverse != NULL; traverse = traverse->next) {
         for (Word* other_traverse = w->head; other_traverse != NULL; other_traverse = other_traverse->next) {
-            if (other_traverse->content == traverse->content && abs(other_traverse->frequency - traverse->frequency) <= 3) {
+            // explanation:
+            // content must match content (duh)
+            // frequency must also match (for a strong(er) correlation)
+            // frequency must be greater than 1 (so it doesn't include outliers.)
+            if (other_traverse->content == traverse->content && other_traverse->frequency == traverse->frequency && other_traverse->frequency > 1) {
+                cout << "Similar: " << traverse->content << " with " << traverse->frequency << " occurences and " << other_traverse->content << " with " << other_traverse->frequency << '\n';
                 return true;
             }
         }
     }
 
-    return false; // WARNING THE FOLLOWING IS A PLACEHOLDER. FUNCTIONALITY TO BE ADDED SOON.
+    return false;
 }
 
 void WordList::sort()

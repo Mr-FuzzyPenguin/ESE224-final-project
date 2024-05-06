@@ -87,7 +87,7 @@ public:
     // to search and filter for strings.
     // have a large chain of if statements that
     // check for the constraint == value
-    void filterBySubstation(string y, string filename);
+    void filterBySubstation(const int& y, const string& file) const;
     void filterByIssue(string searchMetadata, string z);
     void filterByRemark(string k);
 

@@ -95,6 +95,8 @@ void Ticket::generateWordList()
 
 bool Ticket::compare(Ticket* t)
 {
+    // useful for debugging:
+    // cout << "Comparing: " << firstLine->remark << " and " << t->firstLine->remark << '\n';
     return wordFreq->compare(t->wordFreq);
 }
 
@@ -328,13 +330,42 @@ void TicketList::filterByTime(Time start, Time end, string substation)
 }
 
 // "For this question we assumed that we would be comparing this "similar tickets" relative to a ticket that an operator would already be looking at. And so in our function will pass the parameter Y as the number of similar tickets that we want to find, alongside another parameter which will contain the name of a file of a ticket that we want to compare to. And so this output of this function will output a Y number of similar tickets to ticket X."
-void TicketList::filterBySubstation(string y, string X)
+void TicketList::filterBySubstation(const int& y, const string& file) const
 {
-    // so in this case, we look at the substation name from string x. We don't actually have to look at the file itself, the filename will already tell us what to compare.
+    Ticket* what_we_should_be_comparing_to;
+    Ticket* traverse = firstTicket;
+    // stage 1: iterate through the entire list to find the reference file.
+    while (traverse != NULL && traverse->firstLine->remark != file) {
+        traverse = traverse->next;
+    }
 
-    // In this case, ticket X is our filename. We know the filename by looking at the Ticket.firstLine.remark comparisons.
+    // left the loop. If traverse == NULL then that means such file did not exist. Otherwise, store what_we_should_be_comparing_to
+    if (traverse) {
+        what_we_should_be_comparing_to = traverse;
+    } else {
+        cout << "The file: " << file << " could not be found.";
+        return;
+    }
+
+    // stage 2: Whilst re-iterating (start from the top), compare all tickets against file. If similar, print.
+    int counter = 0;
+    traverse = firstTicket;
+    while (traverse != NULL) {
+        // make sure our comparison is similar, and it isn't itself (because that would be silly)
+        if (what_we_should_be_comparing_to->compare(traverse) && traverse->firstLine->remark != what_we_should_be_comparing_to->firstLine->remark && what_we_should_be_comparing_to->substation == traverse->substation) {
+
+            cout << "Found similar ticket: " << counter + 1 << "/" << y << "\n\n"
+                 << *traverse << '\n'
+                 << "Here is the frequency list: ";
+            traverse->wordFreq->display();
+            counter++;
+        }
+        if (counter == y) {
+            return;
+        }
+        traverse = traverse->next;
+    }
 }
-
 void TicketList::filterByIssue(string searchMetadata, string z)
 {
     double doubleQuery;
