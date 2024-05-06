@@ -10,7 +10,7 @@ int main()
 {
     TicketList t;
     string file_list;
-    cout << "Give me a list of all the files, separated by newlines. When done, put '#'";
+    cout << "Give me a list of all the files, separated by newlines. When done, put '#'\n";
     cin >> file_list;
 
     while (file_list != "#") {
@@ -18,9 +18,13 @@ int main()
         cin >> file_list;
     }
 
-    cout << *t.firstTicket;
-    t.firstTicket->wordFreq->display();
+    // cout << *t.firstTicket;
+    // t.firstTicket->wordFreq->display();
     // cout << *t.firstTicket->next;
+
+    // tested.
+    t.filterBySubstation(100, "EB04706280");
+    t.filterByComments(100, "EB04706280");
 
     // each ticket now has their own word frequency chart.
     // WordList* w = t.firstTicket->generateWordList();

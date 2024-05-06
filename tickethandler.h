@@ -88,10 +88,12 @@ public:
     // have a large chain of if statements that
     // check for the constraint == value
     void filterBySubstation(const int& y, const string& file) const;
-    void filterByIssue(string searchMetadata, string z);
-    void filterByRemark(string k);
 
-    void addTicket(string filename);
+    void filterByComments(const int& z, const string& file) const;
+
+    void mostFrequentWord(const string& file) const;
+
+    void addTicket(string file);
 
     TicketList();
 };

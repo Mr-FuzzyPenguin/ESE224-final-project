@@ -365,23 +365,85 @@ void TicketList::filterBySubstation(const int& y, const string& file) const
         }
         traverse = traverse->next;
     }
+
+    if (y) {
+        cout << "Unfortunately, we could only find " << counter << " instances that matched our search criteria.";
+    }
 }
-void TicketList::filterByIssue(string searchMetadata, string z)
+
+void TicketList::filterByComments(const int& z, const string& file) const
 {
-    double doubleQuery;
-    int intQuery;
-    // check what type it should be that we're looking for.
-    if (searchMetadata == "voltage" || searchMetadata == "harmonic" || searchMetadata == "v_non_shunt") {
-        doubleQuery = stod(z);
-    } else if (searchMetadata == "address" || searchMetadata == "sector") {
-        intQuery = stoi(z);
+    Ticket* what_we_should_be_comparing_to;
+    Ticket* traverse = firstTicket;
+    // stage 1: iterate through the entire list to find the reference file.
+    while (traverse != NULL && traverse->firstLine->remark != file) {
+        traverse = traverse->next;
     }
 
-    // massive if statement goes here. It just checks if the ticket that it's iterating is (within reasonable limits) similar to the constraint, and the searchMetadata parameter dictates which piece of metadata we are comparing to our baseline z (another parameter)
+    // left the loop. If traverse == NULL then that means such file did not exist. Otherwise, store what_we_should_be_comparing_to
+    if (traverse) {
+        what_we_should_be_comparing_to = traverse;
+    } else {
+        cout << "The file: " << file << " could not be found.";
+        return;
+    }
+
+    // stage 2: Whilst re-iterating (start from the top), compare all tickets against file. If similar, print.
+    int counter = 0;
+    traverse = firstTicket;
+    while (traverse != NULL) {
+        // make sure our comparison is similar, and it isn't itself (because that would be silly)
+        if (what_we_should_be_comparing_to->compare(traverse) && traverse->firstLine->remark != what_we_should_be_comparing_to->firstLine->remark) {
+
+            cout << "Found similar ticket: " << counter + 1 << "/" << z << "\n\n"
+                 << *traverse << '\n'
+                 << "Here is the frequency list: ";
+            traverse->wordFreq->display();
+            counter++;
+        }
+        if (counter == z) {
+            return;
+        }
+        traverse = traverse->next;
+    }
+
+    if (z) {
+        cout << "Unfortunately, we could only find " << counter << " instances that matched our search criteria.";
+    }
 }
 
-// this is a little more tricky to implement. Implement a way to search key words in the string. I think I'll need some testing in a separate file (test.cpp) or something.
-void TicketList::filterByRemark(string k) { }
+// sadly we might have to say goodbye to this. One of my parsers was completely useless because we won't be using the other data points such as structure, voltage, etc.
+// oh well.
+
+// void TicketList::filterByIssue(string searchMetadata, string z)
+// {
+//     double doubleQuery;
+//     int intQuery;
+//     // check what type it should be that we're looking for.
+//     if (searchMetadata == "voltage" || searchMetadata == "harmonic" || searchMetadata == "v_non_shunt") {
+//         doubleQuery = stod(z);
+//     } else if (searchMetadata == "address" || searchMetadata == "sector") {
+//         intQuery = stoi(z);
+//     }
+//
+//     // massive if statement goes here. It just checks if the ticket that it's iterating is (within reasonable limits) similar to the constraint, and the searchMetadata parameter dictates which piece of metadata we are comparing to our baseline z (another parameter)
+// }
+
+void TicketList::mostFrequentWord(const string& file) const
+{
+    Ticket* traverse = firstTicket;
+    // stage 1: iterate through the entire list to find the reference file.
+    while (traverse != NULL && traverse->firstLine->remark != file) {
+        traverse = traverse->next;
+    }
+
+    if (traverse) {
+        traverse->wordFreq->display();
+    } else {
+        cout << "The file: " << file << " could not be found.";
+        return;
+    }
+}
 
 ostream& operator<<(ostream& out, Ticket& a)
 {
