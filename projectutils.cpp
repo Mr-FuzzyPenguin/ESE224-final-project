@@ -146,6 +146,39 @@ void WordList::display()
     }
 }
 
+bool WordList::compare(WordList& w)
+{
+    // placeholder
+    return true;
+}
+
+void WordList::sort()
+{
+    Word* traverse = head;
+    bool changed = true;
+    while (changed) {
+        changed = false;
+        traverse = head;
+        while (traverse) {
+            if (traverse->next && traverse->frequency < traverse->next->frequency) {
+                changed = true;
+
+                // swap in place.
+                int temp_int = traverse->next->frequency;
+                string temp_string = traverse->next->content;
+
+                traverse->next->frequency = traverse->frequency;
+                traverse->next->content = traverse->content;
+
+                traverse->frequency = temp_int;
+                traverse->content = temp_string;
+            } else {
+                traverse = traverse->next;
+            }
+        }
+    }
+}
+
 string pad_zeroes(int number)
 {
     string output;

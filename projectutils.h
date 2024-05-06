@@ -65,7 +65,11 @@ class WordList {
 public:
     void addRemark(string add_freq);
     void display();
+    // returns true if similar
+    bool compare(WordList& w);
     WordList();
+
+    void sort();
 
 private:
     Word* head;
