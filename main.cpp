@@ -1,19 +1,22 @@
-#include <fstream>
+#include "tickethandler.h"
 #include <iostream>
 #include <string>
 
 // do not include utils. They are to be linked via project utils.
-#include "tickethandler.h"
 
 using namespace std;
 
 int main()
 {
     TicketList t;
+    string file_list;
+    cout << "Give me a list of all the files, separated by newlines. When done, put '#'";
+    cin >> file_list;
 
-    // adding more tests. Soon, we'll generalize.
-    t.addTicket("tickets/EB04706280.csv");
-    t.addTicket("tickets/EB05574047.csv");
+    while (file_list != "#") {
+        t.addTicket(file_list);
+        cin >> file_list;
+    }
 
     cout << *t.firstTicket;
     cout << *t.firstTicket->next;
