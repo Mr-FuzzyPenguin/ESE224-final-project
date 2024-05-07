@@ -1,4 +1,6 @@
 #include "hospitaldata.h"
+#include <algorithm>
+#include <cstddef>
 #include <fstream>
 #include <iostream>
 
@@ -9,31 +11,86 @@ HospitalDatabase::HospitalDatabase()
     head = NULL;
 }
 
-HospitalDatabase::Hospital::Hospital()
+HospitalDatabase::Hospital::Hospital(string name, string sub)
 {
+    hospital_name = name;
+    substation = sub;
+    next = NULL;
     team_head = NULL;
     team_tail = NULL;
 }
 
+HospitalDatabase::Hospital::Team::Surgeon::Surgeon(string n)
+{
+    name = n;
+    next = NULL;
+}
+
 HospitalDatabase::Hospital::Team::Team(string team)
 {
+    trueTeamName = team;
     next = NULL;
     prev = NULL;
     surgery_head = NULL;
     surgery_tail = NULL;
     surgeon_head = NULL;
     surgeon_tail = NULL;
-    averageTime = 0;
+
+    total_difficulty = 0;
+    total_time = 0;
+
     averageDifficulty = 0;
+    averageTime = 0;
+
+    number_of_surgeries = 0;
+
     points = 0;
-    teamNumber = 0;
 }
 
-void HospitalDatabase::Hospital::Team::addSurgery() { }
-void HospitalDatabase::Hospital::Team::addSurgeon() { }
-
-HospitalDatabase::Hospital::Team::Surgery::Surgery(const int& d, const int& m, const string& t, const string& start_time, const string& end_time)
+void HospitalDatabase::Hospital::Team::addSurgery(const Time& st, const Time& et, const int& d, const int& min, const string& t)
 {
+    Surgery* newSurgery = new Surgery(st, et, d, min, t);
+    newSurgery->next = surgery_head;
+    if (surgery_head) {
+        surgery_head->prev = newSurgery;
+    }
+    surgery_head = newSurgery;
+
+    // add total difficulty
+    total_difficulty += newSurgery->difficulty;
+
+    // add total time.
+    total_time += newSurgery->minutes;
+
+    // increase number of surgeries for averages.
+    number_of_surgeries++;
+
+    // add total points.
+    // using d^2/m algorithm (Multiplying by 100 to shift decimal spaces)
+    points += 100 * ((double)newSurgery->difficulty * (double)newSurgery->difficulty) / (newSurgery->minutes);
+
+    // change average values:
+    averageDifficulty = (double)total_difficulty / number_of_surgeries;
+    averageTime = total_time / number_of_surgeries;
+}
+void HospitalDatabase::Hospital::Team::addSurgeon(string n)
+{
+    Surgeon* newSurgeon = new Surgeon(n);
+    newSurgeon->next = surgeon_head;
+    surgeon_head = newSurgeon;
+}
+
+HospitalDatabase::Hospital::Team::Surgery::Surgery(const Time& st, const Time& et, const int& d, const int& min, const string& t)
+{
+    next = NULL;
+    prev = NULL;
+
+    difficulty = d;
+    minutes = min;
+    type = t;
+
+    start_day = st;
+    end_day = et;
 }
 
 void HospitalDatabase::Hospital::addTeam(string team)
@@ -87,9 +144,57 @@ void HospitalDatabase::readFile(string file)
         }
     }
 }
+void HospitalDatabase::displaySurgery(const string& hospital, const string& team)
+{
+    // find the hospital match.
+    // then find the team in that hospital.
+    // we do this because we might have a same team name across hospitals
+
+    Hospital* hospital_traverse = head;
+    while (hospital_traverse != NULL) {
+        // check if we can find the hospital name!
+        if (hospital_traverse->hospital_name == hospital) {
+            break;
+        }
+        hospital_traverse = hospital_traverse->next;
+    }
+
+    if (hospital_traverse == NULL) {
+        cout << "It seems that the hospital name " << hospital << " does not exist.\n";
+        return;
+    }
+
+    // otherwise, we found the hospital. Next, search for the team
+    Hospital::Team* team_traverse = hospital_traverse->team_head;
+    while (team_traverse != NULL) {
+        // check to see if we can find the team.
+        if (team_traverse->trueTeamName == team) {
+            break;
+        }
+        team_traverse = team_traverse->next;
+    }
+
+    // Search the team traverse. If it is blank, then it does not exist.
+    if (team_traverse == NULL) {
+        cout << "It seems that the team name " << team << " does not exist in hospital " << hospital << ".\n";
+        return;
+    }
+
+    // now print everything. We know that it exists.
+    Hospital::Team::Surgery* surgery_traverse = team_traverse->surgery_head;
+    // 100*d^2/m
+    cout << "Team: " << team << " which averages earning points around: " << 100 * team_traverse->averageDifficulty * team_traverse->averageDifficulty / team_traverse->averageTime << " points per hour.\n";
+    while (surgery_traverse != NULL) {
+        cout << surgery_traverse->start_day << " to " << surgery_traverse->end_day << " at " << hospital_traverse->hospital_name << " powered by " << hospital_traverse->substation << " with type: " << surgery_traverse->type << ", difficulty: " << surgery_traverse->difficulty << " taking time: " << surgery_traverse->minutes << "\n";
+
+        surgery_traverse = surgery_traverse->next;
+    }
+}
+
 void HospitalDatabase::readLine(string line)
 {
-    cout << line << '\n';
+    // debug
+    // cout << line << '\n';
 
     int time_step = 0;
 
@@ -224,4 +329,49 @@ void HospitalDatabase::readLine(string line)
         i++;
     }
     difficulty_level = temp_int;
+
+    // searching to see if the hospital exists.
+    Hospital* hospital_traverse = head;
+    while (hospital_traverse != NULL) {
+        // Searching for hospital.
+        if (hospital_traverse->hospital_name == hospital) {
+            break;
+        }
+        hospital_traverse = hospital_traverse->next;
+    }
+
+    // check if hospital_traverse returned null. If it did, that means that the hospital was not found.
+    // just add onto the database.
+    if (!hospital_traverse) {
+        Hospital* newHospital = new Hospital(hospital, substation);
+        newHospital->next = head;
+        head = newHospital;
+        hospital_traverse = newHospital;
+    }
+
+    // at this point of the code, all we know for a fact is that the line that is read will be associated with the hospital that hospital_traverse is pointing to.
+
+    // traverse through the hospital to see if you can find the team. If it cannot, then add a team to the hospital using the addTeam method.
+    Hospital::Team* team_traverse = hospital_traverse->team_head;
+    while (team_traverse != NULL) {
+        if (team_name == team_traverse->trueTeamName) {
+            break;
+        }
+        team_traverse = team_traverse->next;
+    }
+
+    // apparently we couldn't find the team, so we made the team.
+    if (!team_traverse) {
+        Hospital::Team* newTeam = new Hospital::Team(team_name);
+        newTeam->next = hospital_traverse->team_head;
+        hospital_traverse->team_head = newTeam;
+        team_traverse = newTeam;
+    }
+
+    // at this point of the code, all we know for a fact is that the team_traverse pointer now holds the memory address of where the team associated with the surgery is, so we can just call addSurgery on it.
+
+    // Anyways... I bet you that the addSurgery method will be called 100 % of the time, so figure out how to integrate that with reading lines. There's a reason why all of these methods are privated anyways. (I'm slowly losing my sanity)
+    team_traverse->addSurgery(start_time, end_time, difficulty_level, surgery_time, surgery_type);
+
+    // also worthy to note that the addSurgery method will be called within the team, so we're going to need to use team_traverse'
 }

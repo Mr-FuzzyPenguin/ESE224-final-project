@@ -8,7 +8,6 @@ class HospitalDatabase {
         class Team {
             class Surgery {
             private:
-                // Making it a node
                 Surgery* next;
                 Surgery* prev;
 
@@ -19,7 +18,9 @@ class HospitalDatabase {
                 Time end_day;
 
             public:
-                Surgery(const int& d, const int& m, const string& t, const string& start_time, const string& end_time);
+                Surgery();
+                Surgery(const Time& st, const Time& et, const int& d, const int& min, const string& t);
+                friend class HospitalDatabase;
             };
 
             class Surgeon {
@@ -29,19 +30,27 @@ class HospitalDatabase {
             public:
                 string name;
                 Surgeon(string n);
+                friend class HospitalDatabase;
             };
 
         public:
+            double averageDifficulty;
             int averageTime;
-            int averageDifficulty;
-            int points;
             string part;
-            int teamNumber;
 
             // ensure that each team is a doublylinked list of surgeries
             Team(string team);
 
         private:
+            // statistics
+            int total_difficulty;
+            int total_time;
+
+            int number_of_surgeries;
+
+            double points;
+
+            // team info
             string trueTeamName;
 
             Surgery* surgery_head;
@@ -53,8 +62,11 @@ class HospitalDatabase {
             Team* next;
             Team* prev;
 
-            void addSurgery();
-            void addSurgeon();
+            void addSurgery(const Time& st, const Time& et, const int& d, const int& min, const string& t);
+            void displaySurgery();
+
+            void addSurgeon(string n);
+
             friend class HospitalDatabase;
         };
 
@@ -65,16 +77,22 @@ class HospitalDatabase {
     public:
         void addTeam(string team);
         void removeTeam(string team);
+
         string hospital_name;
+        string substation;
 
         int CAP;
-        Hospital();
+        Hospital(string name, string sub);
         friend class HospitalDatabase;
+
+    private:
+        Hospital* next;
     };
 
 public:
     HospitalDatabase();
     Hospital* head;
+    void displaySurgery(const string& hospital, const string& team);
     void readFile(string file);
 
 private:
