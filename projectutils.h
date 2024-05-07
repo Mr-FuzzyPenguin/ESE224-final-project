@@ -1,5 +1,11 @@
 #include <iostream>
 #include <string>
+
+// Necessary to "cause the current header file to be included only once in a single compilation".
+// Otherwise you'll get an error about redefining Time in two different places.
+// for more information visit: https://en.wikipedia.org/wiki/Pragma_once
+#pragma once
+
 using namespace std;
 
 class Time {
@@ -22,30 +28,6 @@ public:
     Time(int y, int m, int d, int h, int min, int s, int ss);
     Time(int y, int m, int d);
     Time();
-    friend class Ticket;
-};
-
-class HospitalDates {
-private:
-    int startYear;
-    int startMonth;
-    int startDay;
-
-    int endYear;
-    int endMonth;
-    int endDay;
-
-    HospitalDates(int Sy, int Sm, int Sd, int Ey, int Em, int Ed)
-    {
-        startYear = Sy;
-        startMonth = Sm;
-        startDay = Sd;
-
-        endYear = Ey;
-        endMonth = Em;
-        endDay = Ed;
-    };
-    HospitalDates();
     friend class Ticket;
 };
 
