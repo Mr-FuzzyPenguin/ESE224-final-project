@@ -22,7 +22,7 @@ HospitalDatabase::Hospital::Hospital(string name, string sub)
 
 HospitalDatabase::Hospital::Team::Surgeon::Surgeon(string n)
 {
-    name = n;
+    full_name = n;
     next = NULL;
 }
 
@@ -107,15 +107,30 @@ void HospitalDatabase::Hospital::addTeam(string team)
 void HospitalDatabase::Hospital::removeTeam(string team)
 {
     Team* temp;
-    Team* traverse;
+    Team* traverse = team_head;
 
     while (traverse != NULL) {
         // found surgeon team to remove.
+        // next to traverse is our target!
         if (traverse->next && traverse->next->trueTeamName == team) {
+            // temp is our target.
             temp = traverse->next;
+
+            // ([temp]) to be deleted
+            // [traverse] ([temp]) [?temp->next]
             traverse->next = temp->next;
+
+            // [traverse] ([temp]) [?temp->next]
+            if (temp->next) {
+                temp->next->prev = traverse;
+            }
+            cout << "Deleting: " << temp->trueTeamName;
             delete temp;
             return;
+        } else if (traverse->trueTeamName == team) {
+            // if this ever runs, then that means that it was the head!
+            delete team_head;
+            team_head = NULL;
         }
         // did not find it, and did not reach end.
         traverse = traverse->next;
@@ -408,4 +423,54 @@ void HospitalDatabase::listSurgeriesAtHospital(const string& h, Time s, Time e) 
         team_traverse = team_traverse->next;
     }
     // iterate through the team sureries
+}
+
+void HospitalDatabase::removeSurgeon(const string& h, const string& t, const string& f)
+{
+    Hospital* traverse = head;
+    while (traverse != NULL) {
+        if (traverse->hospital_name == h) {
+            break;
+        }
+        traverse = traverse->next;
+    }
+    if (!traverse) {
+        cout << "I could not find the hospital name: " << h << '\n';
+        return;
+    }
+
+    // iterate through all team
+    Hospital::Team* team_traverse = traverse->team_head;
+    while (team_traverse != NULL) {
+        if (team_traverse->trueTeamName == t) {
+            break;
+        }
+        team_traverse = team_traverse->next;
+    }
+    if (!team_traverse) {
+        cout << "Team '" << t << "' was not found.\n";
+        return;
+    }
+
+    Hospital::Team::Surgeon* surgeon_traverse = team_traverse->surgeon_head;
+    while (surgeon_traverse != NULL) {
+        if (surgeon_traverse->next && surgeon_traverse->next->full_name == f) {
+            // [surgeon_traverse] ([surgeon_traverse->next]) [?surgeon_traverse->next->next]
+            surgeon_traverse->next = surgeon_traverse->next->next;
+            delete surgeon_traverse->next;
+            break;
+        }
+        if (surgeon_traverse->full_name == f) {
+            // if this runs then that means that it is the first (head) surgeon we want to remove.
+            delete surgeon_traverse;
+            team_traverse->surgeon_head = NULL;
+        }
+        surgeon_traverse = surgeon_traverse->next;
+    }
+    // insanity is repeating the same thing over and over. I think I'm going insane.
+    // - Pete Aptenodytes Forsteri
+    if (!surgeon_traverse) {
+        cout << "Surgeon by name " << f << "  was not found in team " << t << '\n';
+        return;
+    }
 }

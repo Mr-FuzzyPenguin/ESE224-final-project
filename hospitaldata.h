@@ -28,7 +28,7 @@ class HospitalDatabase {
                 Surgeon* next;
 
             public:
-                string name;
+                string full_name;
                 Surgeon(string n);
                 friend class HospitalDatabase;
             };
@@ -95,6 +95,7 @@ public:
     void displaySurgery(const string& hospital, const string& team);
     void listSurgeriesAtHospital(const string& h, Time s, Time e) const;
     void readFile(string file);
+    void removeSurgeon(const string& h, const string& t, const string& f);
 
 private:
     void readLine(string line);
