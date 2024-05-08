@@ -1,3 +1,4 @@
+#include "hospitaldata.h"
 #include "tickethandler.h"
 #include <iostream>
 #include <string>
@@ -26,9 +27,17 @@ int main()
     t.filterBySubstation(100, "EB04706280");
     t.filterByComments(100, "EB04706280");
 
+    HospitalDatabase h;
+    h.readFile("HospitalDatabase_V1.1.csv");
+
+    cout << "End.";
     // each ticket now has their own word frequency chart.
     // WordList* w = t.firstTicket->generateWordList();
     // w->display();
+
+    h.displaySurgery("H1", "T11");
+
+    h.listSurgeriesAtHospital("H1", Time(1, 3, 2022), Time(2, 15, 2022));
 
     // I've recently tested this and made sure this works. I'm pleased with what it was able to do, so for now, I'm commenting out this line.
     // t.filterByTime(Time(2021, 1, 1, 1, 1, 1, 0), Time(2022, 05, 24, 02, 41, 01, 647934), "TM");

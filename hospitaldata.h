@@ -93,6 +93,7 @@ public:
     HospitalDatabase();
     Hospital* head;
     void displaySurgery(const string& hospital, const string& team);
+    void listSurgeriesAtHospital(const string& h, Time s, Time e) const;
     void readFile(string file);
 
 private:

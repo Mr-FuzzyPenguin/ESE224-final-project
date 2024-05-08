@@ -375,3 +375,37 @@ void HospitalDatabase::readLine(string line)
 
     // also worthy to note that the addSurgery method will be called within the team, so we're going to need to use team_traverse'
 }
+
+void HospitalDatabase::listSurgeriesAtHospital(const string& h, Time s, Time e) const
+{
+    if (e < s) {
+        cout << "Check your bounds.";
+    }
+
+    Hospital* traverse = head;
+    while (traverse != NULL) {
+        if (traverse->hospital_name == h) {
+            break;
+        }
+        traverse = traverse->next;
+    }
+    if (!traverse) {
+        cout << "I could not find the hospital name: " << h << '\n';
+        return;
+    }
+    cout << "Listing all surgeries at hospital " << h << " between " << s << " and " << e << '\n';
+
+    // iterate through all team
+    Hospital::Team* team_traverse = traverse->team_head;
+    while (team_traverse != NULL) {
+        cout << "Here is a list done by the team: " << team_traverse->trueTeamName << '\n';
+        Hospital::Team::Surgery* surgery_traverse = team_traverse->surgery_head;
+        int i = 1;
+        while (surgery_traverse != NULL) {
+            cout << i++ << ": " << surgery_traverse->start_day << " to " << surgery_traverse->end_day << " difficulty: " << surgery_traverse->difficulty << " time taken: " << surgery_traverse->minutes << " and type " << surgery_traverse->type << '\n';
+            surgery_traverse = surgery_traverse->next;
+        }
+        team_traverse = team_traverse->next;
+    }
+    // iterate through the team sureries
+}
