@@ -37,6 +37,7 @@ class HospitalDatabase {
             double averageDifficulty;
             int averageTime;
             string part;
+            double allocatedPower = 0; // initialized to 0
 
             // ensure that each team is a doublylinked list of surgeries
             Team(string team);
@@ -82,7 +83,8 @@ class HospitalDatabase {
         string hospital_name;
         string substation;
 
-        int CAP;
+        double CAP;
+        void optimizePower(double powerCAP);
         Hospital(string name, string sub);
         friend class HospitalDatabase;
 

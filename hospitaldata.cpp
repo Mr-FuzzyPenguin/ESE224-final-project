@@ -151,16 +151,7 @@ void HospitalDatabase::Hospital::sortTeams()
                 // do the swap
 
                 // case where there are things in front and behind.
-                // WIlensky's Code
                 if (traverse->next->next != NULL && traverse->prev != NULL) {
-                    //     traverse->prev->next = traverse->next;
-                    //     traverse->prev = traverse->next;
-                    //     traverse->next->prev = traverse->prev;
-                    //     traverse->next = traverse->next->next;
-                    //     traverse->next->prev->next = traverse;
-                    //     traverse->next->prev = traverse;
-                    // }
-
                     // All of Stanley's Code
                     traverse = traverse->next;
                     traverse->prev = traverse->prev->prev;
@@ -180,7 +171,7 @@ void HospitalDatabase::Hospital::sortTeams()
                     traverse->prev->next = traverse;
                     // done!
                 }
-
+                // do case for where things are only in back
                 else if (!traverse->next && traverse->prev->prev) {
                     traverse->prev = traverse->prev->prev;
                     traverse->prev->next->prev = traverse;
@@ -189,14 +180,35 @@ void HospitalDatabase::Hospital::sortTeams()
                     traverse->prev->next = traverse;
                     // done!
                 }
-
-                // also do case for where things are only behind
-
                 // also do case for where there are only two things.
-            } else
-                sorted = true;
+            }
 
             traverse = traverse->next;
+        }
+    }
+}
+
+void HospitalDatabase::Hospital::optimizePower(double powerCAP)
+{
+    // sort the teams first.
+    CAP = powerCAP;
+    sortTeams();
+    double power = CAP;
+    Team* traverse = team_head;
+
+    while (traverse != NULL) {
+        if (power > traverse->averageTime && traverse->next != NULL) {
+            traverse->allocatedPower += (power - traverse->averageTime); // to have something to display
+            power -= traverse->averageTime;
+            traverse = traverse->next;
+        } else if (power > traverse->averageTime && traverse->next == NULL) {
+            traverse->allocatedPower += (power - traverse->averageTime); // to have something to display
+            power -= traverse->averageTime;
+            traverse = team_head;
+        } else if (power < traverse->averageTime && power > 0) {
+            traverse->allocatedPower = power;
+            power = 0;
+            traverse = NULL;
         }
     }
 }
