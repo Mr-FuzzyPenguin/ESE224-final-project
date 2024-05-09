@@ -154,14 +154,29 @@ void HospitalDatabase::Hospital::sortTeams()
 
                 // case where there are things in front and behind.
                  //WIlensky's Code
-                if(traverse->next->next != NULL)
+                if(traverse->next->next != NULL && traverse->prev != NULL)
                 {
                     traverse->prev->next = traverse->next;
-                    traverse->prev = traverse->next;
                     traverse->next->prev = traverse->prev;
+                    traverse->prev = traverse->next;
                     traverse->next = traverse->next->next;
                     traverse->next->prev->next = traverse;
                     traverse->next->prev = traverse;
+                }
+
+                //case in which we are had the haed and the list is 3 or more
+                else if(traverse->next->next != NULL && traverse == team_head)
+                {
+                    traverse->next->next = traverse; 
+                    traverse->prev = traverse->next;
+                    traverse->next->prev = NULL;
+                    traverse->next = traverse->next->next;
+                    traverse->prev->next = traverse;
+                }
+                //this means that there are only 2 nodes in the list and we are at head
+                else if(traverse == team_head)
+                {
+
                 }
                
                 
@@ -175,16 +190,44 @@ void HospitalDatabase::Hospital::sortTeams()
 
                 // do case for where things are only in front
 
-                // also do case for where things are only behind
-
-                // also do case for where there are only two things.
-            }
-            else
                 sorted = true;
 
             traverse = traverse->next;
+            }
         }
     }
+}
+
+void HospitalDatabase::Hospital::optimizePower(double powerCAP)
+{
+    // sort the teams first.
+    CAP = powerCAP;
+    sortTeams();
+    double power = CAP;
+    Team* traverse = team_head;
+    
+        while (traverse != NULL) {
+        if (power > traverse->averageTime && traverse->next != NULL) {
+            traverse->allocatedPower += (power - traverse->averageTime);//to have something to display
+            power -= traverse->averageTime;
+            traverse = traverse->next;
+        } 
+        else if (power > traverse->averageTime && traverse->next == NULL) 
+        {
+            traverse->allocatedPower += (power - traverse->averageTime);//to have something to display
+            power -= traverse->averageTime;
+            traverse = team_head;
+        } 
+        else if(power < traverse->averageTime && power > 0)
+        {
+            traverse->allocatedPower = power;
+            power = 0;
+            traverse = NULL;
+        }
+        
+    }
+    
+    
 }
 
 void HospitalDatabase::readFile(string file)
