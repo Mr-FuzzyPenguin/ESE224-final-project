@@ -139,6 +139,39 @@ void HospitalDatabase::Hospital::removeTeam(string team)
     cout << "Team was not found";
 }
 
+void HospitalDatabase::Hospital::sortTeams()
+{
+    bool sorted = false;
+    while (!sorted) {
+        sorted = true;
+        Team* traverse = team_head;
+        while (traverse != NULL) {
+            // check that next exists and compare the points.
+            if (traverse->next && traverse->next->points > traverse->points) {
+                sorted = false;
+
+                // do the swap
+
+                // case where there are things in front and behind.
+                traverse->prev = traverse->prev->prev;
+                traverse->next->prev = traverse->prev->next;
+                traverse->prev->next->next = traverse->next;
+                traverse->prev->next->prev = traverse;
+                traverse->prev->next = traverse;
+                traverse->next = traverse->next->prev;
+
+                // do case for where things are only in front
+
+                // also do case for where things are only behind
+
+                // also do case for where there are only two things.
+            }
+
+            traverse = traverse->next;
+        }
+    }
+}
+
 void HospitalDatabase::readFile(string file)
 {
     ifstream hospitalFile;

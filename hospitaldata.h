@@ -77,6 +77,7 @@ class HospitalDatabase {
     public:
         void addTeam(string team);
         void removeTeam(string team);
+        void sortTeams();
 
         string hospital_name;
         string substation;
