@@ -100,7 +100,7 @@ void HospitalDatabase::Hospital::addTeam(string team)
     if (team_head == NULL) {
         team_head = newTeam;
     } else {
-        newTeam->next = newTeam; 
+        newTeam->next = newTeam;
     }
 }
 
@@ -153,33 +153,49 @@ void HospitalDatabase::Hospital::sortTeams()
                 // do the swap
 
                 // case where there are things in front and behind.
-                 //WIlensky's Code
-                if(traverse->next->next != NULL)
-                {
-                    traverse->prev->next = traverse->next;
-                    traverse->prev = traverse->next;
-                    traverse->next->prev = traverse->prev;
-                    traverse->next = traverse->next->next;
-                    traverse->next->prev->next = traverse;
-                    traverse->next->prev = traverse;
+                // WIlensky's Code
+                if (traverse->next->next != NULL && traverse->prev != NULL) {
+                    //     traverse->prev->next = traverse->next;
+                    //     traverse->prev = traverse->next;
+                    //     traverse->next->prev = traverse->prev;
+                    //     traverse->next = traverse->next->next;
+                    //     traverse->next->prev->next = traverse;
+                    //     traverse->next->prev = traverse;
+                    // }
+
+                    // All of Stanley's Code
+                    traverse = traverse->next;
+                    traverse->prev = traverse->prev->prev;
+                    traverse->next->prev = traverse->prev->next;
+                    traverse->prev->next->next = traverse->next;
+                    traverse->prev->next->prev = traverse;
+                    traverse->prev->next = traverse;
+                    traverse->next = traverse->next->prev;
                 }
-               
-                
-                //All of Stanley's Code
-                // traverse->prev = traverse->prev->prev;
-                // traverse->next->prev = traverse->prev->next;
-                // traverse->prev->next->next = traverse->next;
-                // traverse->prev->next->prev = traverse;
-                // traverse->prev->next = traverse;
-                // traverse->next = traverse->next->prev;
 
                 // do case for where things are only in front
+                else if (!traverse->prev && traverse->next->next) {
+                    traverse->next = traverse->next->next;
+                    traverse->next->prev->prev = NULL;
+                    traverse->prev = traverse->next->prev;
+                    traverse->next->prev = traverse;
+                    traverse->prev->next = traverse;
+                    // done!
+                }
+
+                else if (!traverse->next && traverse->prev->prev) {
+                    traverse->prev = traverse->prev->prev;
+                    traverse->prev->next->prev = traverse;
+                    traverse->prev->next->next = NULL;
+                    traverse->next = traverse->prev->next;
+                    traverse->prev->next = traverse;
+                    // done!
+                }
 
                 // also do case for where things are only behind
 
                 // also do case for where there are only two things.
-            }
-            else
+            } else
                 sorted = true;
 
             traverse = traverse->next;
