@@ -100,7 +100,7 @@ void HospitalDatabase::Hospital::addTeam(string team)
     if (team_head == NULL) {
         team_head = newTeam;
     } else {
-        newTeam->next = newTeam;
+        newTeam->next = newTeam; 
     }
 }
 
@@ -147,18 +147,31 @@ void HospitalDatabase::Hospital::sortTeams()
         Team* traverse = team_head;
         while (traverse != NULL) {
             // check that next exists and compare the points.
-            if (traverse->next && traverse->next->points > traverse->points) {
+            if (traverse->next != NULL && traverse->next->points > traverse->points) {
                 sorted = false;
 
                 // do the swap
 
                 // case where there are things in front and behind.
-                traverse->prev = traverse->prev->prev;
-                traverse->next->prev = traverse->prev->next;
-                traverse->prev->next->next = traverse->next;
-                traverse->prev->next->prev = traverse;
-                traverse->prev->next = traverse;
-                traverse->next = traverse->next->prev;
+                 //WIlensky's Code
+                if(traverse->next->next != NULL)
+                {
+                    traverse->prev->next = traverse->next;
+                    traverse->prev = traverse->next;
+                    traverse->next->prev = traverse->prev;
+                    traverse->next = traverse->next->next;
+                    traverse->next->prev->next = traverse;
+                    traverse->next->prev = traverse;
+                }
+               
+                
+                //All of Stanley's Code
+                // traverse->prev = traverse->prev->prev;
+                // traverse->next->prev = traverse->prev->next;
+                // traverse->prev->next->next = traverse->next;
+                // traverse->prev->next->prev = traverse;
+                // traverse->prev->next = traverse;
+                // traverse->next = traverse->next->prev;
 
                 // do case for where things are only in front
 
@@ -166,6 +179,8 @@ void HospitalDatabase::Hospital::sortTeams()
 
                 // also do case for where there are only two things.
             }
+            else
+                sorted = true;
 
             traverse = traverse->next;
         }
