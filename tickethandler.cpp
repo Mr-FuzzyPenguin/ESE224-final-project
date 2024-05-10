@@ -1,4 +1,5 @@
 #include "tickethandler.h"
+#include "projectutils.h"
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -39,6 +40,7 @@ void TicketList::addTicket(string filename)
             else if (linenumber == 3) {
                 line3 = line;
                 newTicket = new Ticket(line2, line3);
+                estimateTime(newTicket);
             }
             // not the (VERY FIRST) line.
             else if (line[0] != 'L') {
@@ -65,6 +67,27 @@ void TicketList::addTicket(string filename)
 
     newTicket->generateWordList();
     return;
+}
+
+Time TicketList::estimateTime(Ticket *t1)
+{
+    Time total_result;
+    Time total_time;
+    Time difference;
+    int ticket_count = 0;
+    Ticket* traverse = firstTicket;
+    while (traverse != NULL) {
+        if(traverse->structure == t1->structure)
+        {
+            ticket_count++;
+            difference = traverse->lastLine->time - traverse->firstLine->time;
+            total_time = total_time + difference;
+        }
+        traverse = traverse->next;
+    }
+    total_result = total_time/ticket_count;
+    cout << "Estimated time for ticket: " << total_result << '\n';
+    return total_result;
 }
 
 void Ticket::addLine(string data)

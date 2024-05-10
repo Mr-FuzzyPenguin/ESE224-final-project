@@ -22,6 +22,9 @@ public:
     // time comparisons for filtering by time.
     bool operator<(Time& a);
     bool operator>(Time& a);
+    Time operator-(Time& a);
+    Time operator/(int a);
+    Time operator+(Time& a);
     // helpful for automatically formatting time and printing
     friend ostream& operator<<(ostream& out, Time& t);
 

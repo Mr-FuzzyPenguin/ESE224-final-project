@@ -82,6 +82,9 @@ class HospitalDatabase {
 
         string hospital_name;
         string substation;
+        double totalInterruptionHours; 
+        double totalInterruptions; 
+        double averageInterruptionTime;
 
         double CAP;
         void optimizePower(double powerCAP);
@@ -95,6 +98,8 @@ class HospitalDatabase {
 public:
     HospitalDatabase();
     Hospital* head;
+    int dispatchTeams;
+    void optimizeDispatchTeams();
     void displaySurgery(const string& hospital, const string& team);
     void listSurgeriesAtHospital(const string& h, Time s, Time e) const;
     void readFile(string file);

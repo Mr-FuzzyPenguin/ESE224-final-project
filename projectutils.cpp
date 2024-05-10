@@ -1,5 +1,7 @@
 #include "projectutils.h"
+#include <iostream>
 #include <string>
+#include <cmath>
 
 using namespace std;
 
@@ -74,6 +76,110 @@ bool Time::operator>(Time& t)
     }
     return false;
 }
+
+Time Time::operator-(Time& a){
+        Time result = *this;  // Start with a copy of the current object
+
+        // Subtract sub_seconds
+        result.sub_second -= a.sub_second;
+        if (result.sub_second < 0) {
+            result.sub_second += 1.0;
+            result.seconds -= 1;
+        }
+
+        // Subtract seconds
+        result.seconds -= a.seconds;
+        if (result.seconds < 0) {
+            result.seconds += 60;
+            result.minute -= 1;
+        }
+
+        // Subtract minutes
+        result.minute -= a.minute;
+        if (result.minute < 0) {
+            result.minute += 60;
+            result.hour -= 1;
+        }
+
+        // Subtract hours
+        result.hour -= a.hour;
+        if (result.hour < 0) {
+            result.hour += 24;
+            result.day -= 1;
+        }
+
+        // Subtraction for days, months, and years is more complex due to varying month lengths and leap years
+        // This basic implementation does not handle those and needs a more robust date management approach
+
+        return result;
+    }
+Time Time::operator/(int a)
+{
+    if (a == 0)
+    {
+        throw std::logic_error("Division by zero is not allowed"); //indicates that an exception has occured
+    }
+
+    // Convert time to total seconds + microseconds
+    double totalSeconds = hour * 3600 + minute * 60 + seconds + sub_second;
+    
+    // Divide the total seconds by the divisor
+    totalSeconds /= a;
+
+    Time result(0, 0, 0, 0, 0, 0, 0);
+    result.sub_second = fmod(totalSeconds, 1.0); // Get fractional part
+    totalSeconds = (int)totalSeconds; // Remove fractional part
+    
+    result.seconds = (int)totalSeconds % 60;
+    totalSeconds /= 60;
+
+    result.minute = (int)totalSeconds % 60;
+    totalSeconds /= 60;
+
+    result.hour = (int)totalSeconds % 24;
+    totalSeconds /= 24;
+
+    result.day = (int)totalSeconds; // The remaining part is considered as days
+
+    return result;
+}
+
+
+Time Time::operator+(Time& a)  {
+        Time result(0, 0, 0, 0, 0, 0, 0); // Initialize result Time object
+
+        // Add sub_seconds and handle overflow
+        double totalSubSeconds = this->sub_second + a.sub_second;
+        if (totalSubSeconds >= 1.0) {
+            result.seconds = 1; // Increment seconds if total sub_seconds are more than or equal to one second
+            result.sub_second = fmod(totalSubSeconds, 1.0); // Keep only the fractional part
+        } else {
+            result.sub_second = totalSubSeconds;
+        }
+
+        // Add seconds and handle overflow
+        int totalSeconds = this->seconds + a.seconds + result.seconds; // Include any overflow from sub_seconds
+        result.seconds = totalSeconds % 60;
+        int overflowMinutes = totalSeconds / 60;
+
+        // Add minutes and handle overflow
+        int totalMinutes = this->minute + a.minute + overflowMinutes;
+        result.minute = totalMinutes % 60;
+        int overflowHours = totalMinutes / 60;
+
+        // Add hours and handle overflow (assuming overflow does not convert to days)
+        int totalHours = this->hour + a.hour + overflowHours;
+        result.hour = totalHours % 24;
+        int overflowDays = totalHours / 24;
+
+        // Simple handling of days (not accounting for month or year overflow)
+        result.day = this->day + a.day + overflowDays;
+
+        return result;
+    }
+
+
+
 
 Word::Word(string c)
 {

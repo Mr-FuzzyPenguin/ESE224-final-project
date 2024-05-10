@@ -93,7 +93,8 @@ public:
 
     void mostFrequentWord(const string& file) const;
 
-    void addTicket(string file);
+    void addTicket(string file );
+    Time estimateTime(Ticket *t1);
 
     TicketList();
 };
