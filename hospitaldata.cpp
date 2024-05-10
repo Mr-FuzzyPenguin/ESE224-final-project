@@ -235,7 +235,9 @@ void HospitalDatabase::Hospital::optimizePower(double powerCAP)
             traverse = NULL;
         }
     }
-    Team* traverse = team_head;
+
+    // after guessing how it should be allocated, print all.
+    traverse = team_head;
     while (traverse != NULL) {
         cout << "Team: " << traverse->trueTeamName << " has been allocated " << traverse->allocatedPower << " hours of power.\n";
         traverse = traverse->next;
