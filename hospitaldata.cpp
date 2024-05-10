@@ -198,11 +198,11 @@ void HospitalDatabase::Hospital::optimizePower(double powerCAP)
 
     while (traverse != NULL) {
         if (power > traverse->averageTime && traverse->next != NULL) {
-            traverse->allocatedPower += (power - traverse->averageTime); // to have something to display
+            traverse->allocatedPower += traverse->averageTime; // to have something to display
             power -= traverse->averageTime;
             traverse = traverse->next;
         } else if (power > traverse->averageTime && traverse->next == NULL) {
-            traverse->allocatedPower += (power - traverse->averageTime); // to have something to display
+            traverse->allocatedPower += traverse->averageTime; // to have something to display
             power -= traverse->averageTime;
             traverse = team_head;
         } else if (power < traverse->averageTime && power > 0) {
