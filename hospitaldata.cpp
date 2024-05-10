@@ -149,7 +149,6 @@ void HospitalDatabase::Hospital::sortTeams()
         while (traverse != NULL) {
             // check that next exists and compare the points.
             if (traverse->next != NULL && traverse->next->points > traverse->points) {
-                cout << traverse->next->points << " vs. " << traverse->points << '\n';
                 sorted = false;
 
                 // do the swap
@@ -221,7 +220,7 @@ void HospitalDatabase::Hospital::optimizePower(double powerCAP)
     double power = CAP;
     Team* traverse = team_head;
 
-    while (traverse != NULL) {
+    while (power > 0 && traverse != NULL) {
         if (power > traverse->averageTime && traverse->next != NULL) {
             traverse->allocatedPower += traverse->averageTime; // to have something to display
             power -= traverse->averageTime;
@@ -231,7 +230,7 @@ void HospitalDatabase::Hospital::optimizePower(double powerCAP)
             power -= traverse->averageTime;
             traverse = team_head;
         } else if (power < traverse->averageTime && power > 0) {
-            traverse->allocatedPower = power;
+            traverse->allocatedPower += power;
             power = 0;
             traverse = NULL;
         }
