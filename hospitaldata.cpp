@@ -13,6 +13,30 @@ HospitalDatabase::HospitalDatabase()
 HospitalDatabase::Hospital::Hospital(string name, string sub)
 {
     hospital_name = name;
+    //Hard Coded Interruption Data
+    if (hospital_name == "EB") {
+        totalInterruptionHours = 16224;
+        totalInterruptions = 27;
+        averageInterruptionTime = (totalInterruptionHours) / totalInterruptions;
+    } else if (hospital_name == "OF") {
+        totalInterruptionHours = 12780;
+        totalInterruptions = 22;
+        averageInterruptionTime = (totalInterruptionHours) / totalInterruptions;
+    } else if (hospital_name == "HD") {
+        totalInterruptionHours = 12621;
+        totalInterruptions = 18;
+        averageInterruptionTime = (totalInterruptionHours) / totalInterruptions;
+    } else if (hospital_name == "TM") {
+        totalInterruptionHours = 11415;
+        totalInterruptions = 16;
+        averageInterruptionTime = (totalInterruptionHours) / totalInterruptions;
+    } else if (hospital_name == "RL") {
+        totalInterruptionHours = 11980;
+        totalInterruptions = 12;
+        averageInterruptionTime = (totalInterruptionHours) / totalInterruptions;
+    } else {
+        std::cout << "Hospital name not recognized. No data available." << std::endl;
+    }
     substation = sub;
     next = NULL;
     team_head = NULL;
