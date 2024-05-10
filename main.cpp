@@ -37,8 +37,11 @@ int main()
 
     h.displaySurgery("H1", "T11");
 
-    h.listSurgeriesAtHospital("H1", Time(1, 3, 2022), Time(2, 15, 2022));
-
+    cout << "######################### BEFORE: #########################";
+    h.listSurgeriesAtHospital("H5", Time(1, 3, 2022), Time(2, 15, 2022));
+    h.head->sortTeams();
+    cout << "######################### AFTER: #########################";
+    h.listSurgeriesAtHospital("H5", Time(1, 3, 2022), Time(2, 15, 2022));
     // I've recently tested this and made sure this works. I'm pleased with what it was able to do, so for now, I'm commenting out this line.
     // t.filterByTime(Time(2021, 1, 1, 1, 1, 1, 0), Time(2022, 05, 24, 02, 41, 01, 647934), "TM");
     return 0;
