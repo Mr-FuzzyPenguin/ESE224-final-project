@@ -1,4 +1,5 @@
 #include "hospitaldata.h"
+#include <cstddef>
 #include <fstream>
 #include <iostream>
 
@@ -98,7 +99,9 @@ void HospitalDatabase::Hospital::addTeam(string team)
     if (team_head == NULL) {
         team_head = newTeam;
     } else {
-        newTeam->next = newTeam;
+        newTeam->next = team_head;
+        team_head->prev = newTeam;
+        team_head = newTeam;
     }
 }
 
@@ -146,6 +149,7 @@ void HospitalDatabase::Hospital::sortTeams()
         while (traverse != NULL) {
             // check that next exists and compare the points.
             if (traverse->next != NULL && traverse->next->points > traverse->points) {
+                cout << traverse->next->points << " vs. " << traverse->points << '\n';
                 sorted = false;
 
                 // do the swap
@@ -169,6 +173,7 @@ void HospitalDatabase::Hospital::sortTeams()
                     traverse->prev = traverse->next->prev;
                     traverse->next->prev = traverse;
                     traverse->prev->next = traverse;
+                    team_head = team_head->prev;
                     // done!
                 }
                 // do case for where things are only in back
@@ -180,7 +185,27 @@ void HospitalDatabase::Hospital::sortTeams()
                     traverse->prev->next = traverse;
                     // done!
                 }
+
+                // do case for second to last:
+                else if (!traverse->next->next && traverse->prev) {
+                    traverse->prev->next = traverse->next;
+                    traverse->next->prev = traverse->prev;
+                    traverse->prev = traverse->next;
+                    traverse->next->next = traverse;
+                    traverse->next = NULL;
+                }
                 // also do case for where there are only two things.
+                else if (!traverse->next->next && !traverse->prev->prev) {
+                    Team* temp = traverse;
+                    temp = traverse->next;
+                    traverse->prev = temp;
+                    traverse->next = NULL;
+                    temp->next = traverse;
+                    temp->prev = traverse;
+                }
+                // also do case for when there are one thing
+                else if (!traverse->next && !traverse->prev) {
+                }
             }
 
             traverse = traverse->next;
@@ -453,6 +478,9 @@ void HospitalDatabase::readLine(string line)
     if (!team_traverse) {
         Hospital::Team* newTeam = new Hospital::Team(team_name);
         newTeam->next = hospital_traverse->team_head;
+        if (hospital_traverse->team_head) {
+            hospital_traverse->team_head->prev = newTeam;
+        }
         hospital_traverse->team_head = newTeam;
         team_traverse = newTeam;
     }
@@ -487,7 +515,7 @@ void HospitalDatabase::listSurgeriesAtHospital(const string& h, Time s, Time e) 
     // iterate through all team
     Hospital::Team* team_traverse = traverse->team_head;
     while (team_traverse != NULL) {
-        cout << "Here is a list done by the team: " << team_traverse->trueTeamName << '\n';
+        cout << "Here is a list done by the team: " << team_traverse->trueTeamName << " which earned " << team_traverse->points << " points " << '\n';
         Hospital::Team::Surgery* surgery_traverse = team_traverse->surgery_head;
         int i = 1;
         while (surgery_traverse != NULL) {
