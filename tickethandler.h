@@ -79,6 +79,8 @@ public:
     Ticket* firstTicket;
     Ticket* lastTicket;
 
+    int number_of_tickets;
+
     void filterByTime(Time start, Time end, string substation);
 
     // TicketList is a class (which is a wrapper) for a linked list of type: (Ticket)
@@ -93,8 +95,8 @@ public:
 
     void mostFrequentWord(const string& file) const;
 
-    Time addTicket(string file );
-    Time estimateTime(Ticket *t1);
+    Time addTicket(string file);
+    Time estimateTime(Ticket* t1);
 
     TicketList();
 };

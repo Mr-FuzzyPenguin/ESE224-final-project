@@ -1,6 +1,6 @@
 #include "tickethandler.h"
-#include "projectutils.h"
 #include "hospitaldata.h"
+#include "projectutils.h"
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -10,6 +10,7 @@ TicketList::TicketList()
 {
     firstTicket = NULL;
     lastTicket = NULL;
+    number_of_tickets = 0;
 }
 
 Time TicketList::addTicket(string filename)
@@ -42,7 +43,7 @@ Time TicketList::addTicket(string filename)
             else if (linenumber == 3) {
                 line3 = line;
                 newTicket = new Ticket(line2, line3);
-               estimated_time = estimateTime(newTicket);
+                estimated_time = estimateTime(newTicket);
             }
             // not the (VERY FIRST) line.
             else if (line[0] != 'L') {
@@ -69,20 +70,20 @@ Time TicketList::addTicket(string filename)
     }
 
     newTicket->generateWordList();
-    return;
+    number_of_tickets++;
+    return estimated_time;
 }
 
-Time TicketList::estimateTime(Ticket *t1)
+Time TicketList::estimateTime(Ticket* t1)
 {
-    //incomplete
+    // incomplete
     Time total_result = Time(0, 0, 0, 0, 0, 0, 0);
     Time total_time;
     Time difference;
     int ticket_count = 0;
     Ticket* traverse = firstTicket;
     while (traverse != NULL) {
-        if(traverse->structure == t1->structure)
-        {
+        if (traverse->structure == t1->structure) {
             ticket_count++;
             difference = traverse->lastLine->time - traverse->firstLine->time;
             total_time = total_time + difference;
@@ -90,13 +91,11 @@ Time TicketList::estimateTime(Ticket *t1)
 
         traverse = traverse->next;
     }
-    if(ticket_count == 0)
-    {
+    if (ticket_count == 0) {
         cout << "No tickets found with the same structure.\n";
         return total_result;
-    }
-    else
-        total_result = total_time/ticket_count;
+    } else
+        total_result = total_time / ticket_count;
     cout << "Estimated time for ticket: " << total_result << '\n';
     return total_result;
 }
