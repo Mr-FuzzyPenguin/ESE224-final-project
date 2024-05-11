@@ -25,6 +25,9 @@ public:
     Time operator-(Time& a);
     Time operator/(int a);
     Time operator+(Time& a);
+    Time operator*(int a);
+    bool operator==(Time& other);
+    bool operator>=(Time& other);
     // helpful for automatically formatting time and printing
     friend ostream& operator<<(ostream& out, Time& t);
 

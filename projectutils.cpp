@@ -77,6 +77,16 @@ bool Time::operator>(Time& t)
     return false;
 }
 
+bool Time::operator==(Time& other){
+        return (hour == other.hour && minute == other.minute && seconds == other.seconds);
+    }
+
+    // Define the '>=' operator using '<' and '=='
+ bool Time::operator>=(Time& other){
+        return !(*this < other) || (*this == other);
+    }
+
+
 Time Time::operator-(Time& a){
         Time result = *this;  // Start with a copy of the current object
 
@@ -178,6 +188,28 @@ Time Time::operator+(Time& a)  {
         return result;
     }
 
+Time Time::operator*(int a) {
+        Time result(0, 0, 0, 0, 0, 0, 0); // Initialize result Time object
+
+        // Calculate total seconds as a base for multiplication
+        double totalSeconds = hour * 3600 + minute * 60 + seconds + sub_second;
+        totalSeconds *= a;
+
+        // Now, distribute totalSeconds back into hours, minutes, seconds, and sub_seconds
+        result.sub_second = fmod(totalSeconds, 1.0); // Extract fractional part
+        int integralSeconds = static_cast<int>(totalSeconds); // Get the integral part of seconds
+
+        result.seconds = integralSeconds % 60;
+        int totalMinutes = integralSeconds / 60;
+
+        result.minute = totalMinutes % 60;
+        int totalHours = totalMinutes / 60;
+
+        result.hour = totalHours % 24;
+        result.day = totalHours / 24; // Store overflow in days (assuming we are not handling month/year overflow)
+
+        return result;
+    }
 
 
 

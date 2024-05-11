@@ -84,6 +84,9 @@ class HospitalDatabase {
         string substation;
         double totalInterruptionHours; 
         double totalInterruptions; 
+        double numberOfCustomersInterrupted;
+        double customersPerInterruption;
+        Time currentCustomerInterruptionTime;
         double averageInterruptionTime;
 
         double CAP;
@@ -98,7 +101,8 @@ class HospitalDatabase {
 public:
     HospitalDatabase();
     Hospital* head;
-    int dispatchTeams;
+    int TOT;
+    void sortHospitalsByCustHours();
     void optimizeDispatchTeams();
     void displaySurgery(const string& hospital, const string& team);
     void listSurgeriesAtHospital(const string& h, Time s, Time e) const;

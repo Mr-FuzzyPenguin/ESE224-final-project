@@ -1,5 +1,6 @@
 #include "tickethandler.h"
 #include "projectutils.h"
+#include "hospitaldata.h"
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -11,10 +12,11 @@ TicketList::TicketList()
     lastTicket = NULL;
 }
 
-void TicketList::addTicket(string filename)
+Time TicketList::addTicket(string filename)
 {
     ifstream ticketFile;
 
+    Time estimated_time;
     Ticket* newTicket;
     string line;
     string line2;
@@ -40,7 +42,7 @@ void TicketList::addTicket(string filename)
             else if (linenumber == 3) {
                 line3 = line;
                 newTicket = new Ticket(line2, line3);
-                estimateTime(newTicket);
+               estimated_time = estimateTime(newTicket);
             }
             // not the (VERY FIRST) line.
             else if (line[0] != 'L') {
@@ -48,6 +50,7 @@ void TicketList::addTicket(string filename)
             }
             line = "";
         }
+        return estimated_time;
     }
     ticketFile.close();
 
@@ -92,7 +95,8 @@ Time TicketList::estimateTime(Ticket *t1)
         cout << "No tickets found with the same structure.\n";
         return total_result;
     }
-    total_result = total_time/ticket_count;
+    else
+        total_result = total_time/ticket_count;
     cout << "Estimated time for ticket: " << total_result << '\n';
     return total_result;
 }

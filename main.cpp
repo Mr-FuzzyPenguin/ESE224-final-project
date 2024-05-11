@@ -40,6 +40,11 @@ int main()
     cout << "######################### BEFORE: #########################";
     h.listSurgeriesAtHospital("H5", Time(1, 3, 2022), Time(2, 15, 2022));
     h.head->sortTeams();
+    //h.TOT = 3;
+    //Time estimatedCusomterInterruption = h.head->addTeam(/*file name*/) * h.customerPerInterruption;
+    //h.head.currentCustomerInterruptionTime = estimatedCusomterInterruption;
+    //h.optimizeDispatchTeams();
+    
     cout << "######################### AFTER: #########################";
     h.listSurgeriesAtHospital("H5", Time(1, 3, 2022), Time(2, 15, 2022));
     // I've recently tested this and made sure this works. I'm pleased with what it was able to do, so for now, I'm commenting out this line.

@@ -17,22 +17,32 @@ HospitalDatabase::Hospital::Hospital(string name, string sub)
     if (hospital_name == "EB") {
         totalInterruptionHours = 16224;
         totalInterruptions = 27;
+        numberOfCustomersInterrupted = 5749;
+        customersPerInterruption = (numberOfCustomersInterrupted) / totalInterruptions;
         averageInterruptionTime = (totalInterruptionHours) / totalInterruptions;
     } else if (hospital_name == "OF") {
         totalInterruptionHours = 12780;
         totalInterruptions = 22;
+        numberOfCustomersInterrupted = 4413;
+        customersPerInterruption = (numberOfCustomersInterrupted) / totalInterruptions;
         averageInterruptionTime = (totalInterruptionHours) / totalInterruptions;
     } else if (hospital_name == "HD") {
         totalInterruptionHours = 12621;
         totalInterruptions = 18;
+        numberOfCustomersInterrupted = 5990;
+        customersPerInterruption = (numberOfCustomersInterrupted) / totalInterruptions;
         averageInterruptionTime = (totalInterruptionHours) / totalInterruptions;
     } else if (hospital_name == "TM") {
         totalInterruptionHours = 11415;
         totalInterruptions = 16;
+        numberOfCustomersInterrupted = 3436;
+        customersPerInterruption = (numberOfCustomersInterrupted) / totalInterruptions;
         averageInterruptionTime = (totalInterruptionHours) / totalInterruptions;
     } else if (hospital_name == "RL") {
         totalInterruptionHours = 11980;
         totalInterruptions = 12;
+        numberOfCustomersInterrupted = 3529;
+        customersPerInterruption = (numberOfCustomersInterrupted) / totalInterruptions;
         averageInterruptionTime = (totalInterruptionHours) / totalInterruptions;
     } else {
         std::cout << "Hospital name not recognized. No data available." << std::endl;
@@ -267,6 +277,44 @@ void HospitalDatabase::Hospital::optimizePower(double powerCAP)
         traverse = traverse->next;
     }
 }
+
+void HospitalDatabase::optimizeDispatchTeams(){
+    sortHospitalsByCustHours();
+}
+
+void HospitalDatabase::sortHospitalsByCustHours() {
+    if (head == nullptr || head->next == nullptr) {
+        return; // List is empty or has one item, already sorted.
+    }
+
+    Hospital* sorted = nullptr; // This will be the new sorted linked list.
+    Hospital* current = head;   // Current node to be inserted into the sorted list.
+    Hospital* next = nullptr;   // To keep track of the next node.
+
+    while (current != nullptr) {
+        next = current->next; // Save the next item.
+
+        // Locate the position to insert the current node in the sorted linked list.
+        if (sorted == nullptr || sorted->currentCustomerInterruptionTime < current->currentCustomerInterruptionTime) {
+            // Insert at the beginning if it's the first node or has the greatest time.
+            current->next = sorted;
+            sorted = current;
+        } else {
+            Hospital* temp = sorted;
+            // Find the correct position in the sorted part.
+            while (temp->next != nullptr && temp->next->currentCustomerInterruptionTime >= current->currentCustomerInterruptionTime) {
+                temp = temp->next;
+            }
+            current->next = temp->next;
+            temp->next = current;
+        }
+
+        current = next; // Move to the next item to sort.
+    }
+
+    head = sorted; // Update the head to the new sorted list.
+}
+
 
 void HospitalDatabase::readFile(string file)
 {
