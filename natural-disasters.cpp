@@ -32,9 +32,9 @@ double Outages::predict_next_year_performance(const int& surgery_points, const i
     return (double)surgery_points / (interruption_hours + 1);
 }
 
-int predict_power_outage()
+int predict_power_outage(const int& ticket_count, const int& hospital_hours_out)
 {
-    return
+    return ticket_count * hospital_hours_out;
 }
 
 void Outages::add_power_outage_time(const int& t)
