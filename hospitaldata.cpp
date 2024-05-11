@@ -278,8 +278,19 @@ void HospitalDatabase::Hospital::optimizePower(double powerCAP)
     }
 }
 
-void HospitalDatabase::optimizeDispatchTeams(){
+void HospitalDatabase::optimizeDispatchTeamsByCustHours(){
     sortHospitalsByCustHours();
+    Hospital* traverse = head;
+    int tot = TOT;
+    while(tot != 0 && traverse != NULL){
+        cout << "dispatched team at hospital: " << traverse->hospital_name << endl;
+        tot--;
+        traverse = traverse->next;
+    }
+    if(tot == 0){
+        cout << "All the teams were dispatched" << endl;
+    }
+    
 }
 
 void HospitalDatabase::sortHospitalsByCustHours() {

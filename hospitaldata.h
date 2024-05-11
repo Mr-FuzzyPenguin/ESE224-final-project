@@ -91,6 +91,7 @@ class HospitalDatabase {
 
         double CAP;
         void optimizePower(double powerCAP);
+        
         Hospital(string name, string sub);
         friend class HospitalDatabase;
 
@@ -103,6 +104,7 @@ public:
     Hospital* head;
     int TOT;
     void sortHospitalsByCustHours();
+    void optimizeDispatchTeamsByCustHours();
     void optimizeDispatchTeams();
     void displaySurgery(const string& hospital, const string& team);
     void listSurgeriesAtHospital(const string& h, Time s, Time e) const;
