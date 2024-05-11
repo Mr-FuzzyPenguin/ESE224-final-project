@@ -74,16 +74,17 @@ Time TicketList::addTicket(string filename)
     return estimated_time;
 }
 
-Time TicketList::estimateTime(Ticket* t1)
+Time TicketList::estimateTime(Ticket *t1)
 {
-    // incomplete
+    //incomplete
     Time total_result = Time(0, 0, 0, 0, 0, 0, 0);
     Time total_time;
     Time difference;
     int ticket_count = 0;
     Ticket* traverse = firstTicket;
     while (traverse != NULL) {
-        if (traverse->structure == t1->structure) {
+        if(traverse->structure == t1->structure)
+        {
             ticket_count++;
             difference = traverse->lastLine->time - traverse->firstLine->time;
             total_time = total_time + difference;
@@ -91,12 +92,15 @@ Time TicketList::estimateTime(Ticket* t1)
 
         traverse = traverse->next;
     }
-    if (ticket_count == 0) {
+    if(ticket_count == 0)
+    {
         cout << "No tickets found with the same structure.\n";
         return total_result;
-    } else
-        total_result = total_time / ticket_count;
+    }
+    else
+        total_result = total_time/ticket_count;
     cout << "Estimated time for ticket: " << total_result << '\n';
+    
     return total_result;
 }
 
